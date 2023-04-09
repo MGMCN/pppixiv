@@ -1,10 +1,13 @@
 import time
+import threading
 
 import pixivpy3 as pixiv
 from flask import Flask, request
 from gppt import GetPixivToken
 from dotenv import load_dotenv
+from typing import NoReturn
 import os
+
 
 load_dotenv(verbose=True)
 
@@ -18,11 +21,30 @@ def hello_world():
 
 
 refresh_token = None
+uid_received = False
 username = os.getenv("username")
 password = os.getenv("password")
 # Init pixiv api
 api = pixiv.AppPixivAPI()
 
+
+def refresh_token_periodically() -> NoReturn:
+    global refresh_token
+    g = GetPixivToken()
+    retry = 5
+    while True:
+        print("Token will be refreshed in 59 minutes!")
+        time.sleep(59 * 60)  # Sleep for 59 minutes
+        while retry > 0:
+            try:
+                refresh_token = g.refresh(refresh_token=refresh_token)["refresh_token"]
+                print("Token refreshed successfully!")
+                break
+            except ValueError:
+                print("Get error when refreshing the token!")
+            time.sleep(0.5)
+            retry -= 1
+        print(refresh_token)
 
 def getToken() -> (str, bool):
     global username, password
@@ -53,7 +75,7 @@ def packIllustUrl(uid) -> str:
 
 @app.route('/getIllustListByUid', methods=["POST"])
 def getIllustListByUid():
-    global refresh_token
+    global refresh_token, uid_received
     # Get uid from posted json
     uid = request.form["uid"]
     # Only for test
@@ -81,6 +103,12 @@ def getIllustListByUid():
                 if err:
                     # returnJson["status"] = 0
                     return {"status": 0}
+
+    # Start a thread to refresh token periodically
+    if not uid_received:
+        t = threading.Thread(target=refresh_token_periodically, daemon=True)
+        t.start()
+        uid_received = True
 
     offset = 0
 
