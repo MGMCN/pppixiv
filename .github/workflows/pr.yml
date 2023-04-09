@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test_for_crawler_build_on_Ubuntu:
+  pixiv_docker_image_build_test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
