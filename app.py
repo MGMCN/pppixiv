@@ -11,6 +11,7 @@ load_dotenv(verbose=True)
 app = Flask(__name__)
 
 
+# Just to see if this server is running correctly
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -19,6 +20,8 @@ def hello_world():
 refresh_token = None
 username = os.getenv("username")
 password = os.getenv("password")
+# Init pixiv api
+api = pixiv.AppPixivAPI()
 
 
 def getToken() -> (str, bool):
@@ -58,9 +61,6 @@ def getIllustListByUid():
     returnJson = {"list": {}}
     err = False
     # load_dotenv(verbose=True)
-
-    # Init pixiv api
-    api = pixiv.AppPixivAPI()
 
     # Get pixiv token
     if refresh_token is None:

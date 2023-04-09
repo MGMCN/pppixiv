@@ -1,0 +1,7 @@
+runs:
+  using: "composite"
+  steps:
+    - name: build dockerfile
+      shell: bash
+      run: |
+        docker build . -t pixiv
