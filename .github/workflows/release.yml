@@ -1,0 +1,29 @@
+name: release_docker_image
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+
+  docker-build:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: call docker-build workflow
+        uses: ./.github/actions/docker
+
+  deploy:
+    needs: [ docker-build ]
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: call deploy workflow
+        uses: ./.github/actions/deploy
+        with:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
