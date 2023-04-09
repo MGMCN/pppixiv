@@ -30,14 +30,13 @@ api = pixiv.AppPixivAPI()
 
 def refresh_token_periodically() -> NoReturn:
     global refresh_token
-    g = GetPixivToken()
     retry = 5
     while True:
         print("Token will be refreshed in 59 minutes!")
         time.sleep(59 * 60)  # Sleep for 59 minutes
         while retry > 0:
             try:
-                refresh_token = g.refresh(refresh_token=refresh_token)["refresh_token"]
+                refresh_token = GetPixivToken.refresh(refresh_token=refresh_token)["refresh_token"]
                 print("Token refreshed successfully!")
                 break
             except ValueError:
