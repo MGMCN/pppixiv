@@ -1,4 +1,9 @@
 # pppixiv
+[![build](https://img.shields.io/github/actions/workflow/status/MGMCN/pppixiv/pr.yml)](https://img.shields.io/github/actions/workflow/status/MGMCN/pppixiv/pr.yml)
+[![issue](https://img.shields.io/github/issues/MGMCN/pppixiv)](https://github.com/MGMCN/pppixiv/issues)
+[![license](https://img.shields.io/github/license/MGMCN/pppixiv)](https://github.com/MGMCN/pppixiv/blob/main/LICENSE)
+![last_commit](https://img.shields.io/github/last-commit/MGMCN/pppixiv?color=red)
+  
 Get links to all illustrations by a particular artist on pixiv.
 ## Usage
 ```bash
