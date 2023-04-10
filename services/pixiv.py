@@ -83,24 +83,6 @@ class Pixiv:
 
         return success
 
-    def parseResponse(self, res) -> (list, bool, str):
-        success = True
-        msg = ""
-
-        l = []
-
-        if res["illusts"] is None:
-            success = False
-            msg = "uid does not exist!"
-        else:
-            for item in res["illusts"]:
-                # Title encoding type Unicode
-                l.append({
-                    "title": item["title"],
-                    "url": packIllustUrl(item["id"]),
-                })
-        return l, success, msg
-
     def getIllustListByUid(self, uid) -> (list, bool, str):
         success = True
         msg = uid
@@ -134,6 +116,7 @@ class Pixiv:
 
         l = []
 
+        # day, week, month, day_male, day_female, week_original, week_rookie, day_manga
         res = self.pixivApi.illust_ranking(mode=mode, offset=offset)
 
         illusts = res["illusts"]
@@ -170,29 +153,6 @@ class Pixiv:
 
         return l, success, msg
 
-    # @staticmethod
-    # def my_decorator(func):
-    #     def wrapper(*args, **kwargs):
-    #         success = True
-    #         msg = None
-    #         l = []
-    #
-    #         res = func(**kwargs)
-    #
-    #         keys = [*args]
-    #         tags = res[keys[0]]
-    #         if len(tags) == 0:
-    #             success = False
-    #             msg = "Trend tags do not exist!"
-    #         for item in tags:
-    #             # Title encoding type Unicode
-    #             l.append({
-    #                 "tag": item["tag"],
-    #                 "translated_tag": item["translated_name"],
-    #             })
-    #
-    #     return wrapper
-
     def startPixivSession(self) -> bool:
         success = self.getToken()
         if not success:
@@ -205,6 +165,7 @@ class Pixiv:
         self.scheduler.enter(self.interval, 0, self.runRefreshTokenTask)
         t = threading.Thread(target=self.scheduler.run)
         t.start()
+        # Maybe we don't need this ?
         return success
 
     def runRefreshTokenTask(self) -> bool:

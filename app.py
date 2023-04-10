@@ -39,15 +39,17 @@ def getTrendingTags():
         json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
     return json
 
-@app.route('/getIllustRanking', methods=["GET"])
+
+@app.route('/getIllustRanking', methods=["POST"])
 def getIllustRanking():
-    l, success, message = myPixiv.getIllustRanking()
+    # Get mode from posted json
+    mode = request.form["mode"]
+    l, success, message = myPixiv.getIllustRanking(mode=mode)
     if success:
         json = {"status": 1, "message": "Get success! %s" % message, "list": l}
     else:
         json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
     return json
-
 
 
 if __name__ == '__main__':

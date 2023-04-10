@@ -26,20 +26,51 @@ $ docker pull godmountain/pppixiv:latest
 $ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" godmountain/pppixiv:latest
 ```
 
-### Run with Python
-```json
+## The api for accessing our services
+Visit```http://ip:port/getIllustListByUid```and post data ```{"uid":"xxx"}```.You will get 👇🏻
+```json lines
 {
   "status": 1,  // 0 stands for failure while 1 stands for success
   "message": "message",  // error message
   "list": [
-    {"title": "title", "url": "url",
-    {"title": ...},
-    .
-    .
+    {"title": "title1", "url": "url1"}, // item1
+    {"title": ...},                     // item2
+    .,
+    .,
     .
   ]
 }
 ```
 
+Visit```http://ip:port/getIllustRanking```and post data ```{"mode":"xxx"}```. (We have mode: day, week, month, day_male, day_female, week_original, week_rookie, day_manga) You will get 👇🏻
+```json lines
+{
+  "status": 1,  // 0 stands for failure while 1 stands for success
+  "message": "message",  // error message
+  "list": [
+    {"title": "title1", "url": "url1"}, // item1
+    {"title": ...},                     // item2
+    .,
+    .,
+    .
+  ]
+}
+```
+
+Visit```http://ip:port/getTrendingTags```.
+You will get 👇🏻
+```json lines
+{
+  "status": 1,  // 0 stands for failure while 1 stands for success
+  "message": "message",  // error message
+  "list": [
+    {"tag": "JP version(Unicode)", "translated_tag": "EN version"}, // item1
+    {"tag": ...},                                                   // item2
+    .,
+    .,
+    .
+  ]
+}
+```
 ## Contributing
 Contributions must be available on a separately named branch based on the latest version of the main branch.
