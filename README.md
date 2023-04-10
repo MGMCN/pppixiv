@@ -25,5 +25,21 @@ $ python3 test.py # Make sure you have the requests library installed
 $ docker pull godmountain/pppixiv:latest
 $ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" godmountain/pppixiv:latest
 ```
+
+### Run with Python
+```json
+{
+  "status": 1,  // 0 stands for failure while 1 stands for success
+  "message": "message",  // error message
+  "list": [
+    {"title": "title", "url": "url",
+    {"title": ...},
+    .
+    .
+    .
+  ]
+}
+```
+
 ## Contributing
 Contributions must be available on a separately named branch based on the latest version of the main branch.
