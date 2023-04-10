@@ -33,7 +33,7 @@ class Pixiv:
         self.token = None
         self.retry = retry
         self.scheduler = sched.scheduler(time.time, time.sleep)
-        self.interval = interval  # 3300s
+        self.interval = interval
 
     def getToken(self) -> bool:
         success = True
@@ -101,7 +101,8 @@ class Pixiv:
             for item in illusts:
                 # Title encoding type Unicode
                 l.append({
-                    item["title"]: packIllustUrl(item["id"]),
+                    "title": item["title"],
+                    "url": packIllustUrl(item["id"]),
                 })
             if res["next_url"] is None:
                 break

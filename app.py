@@ -26,7 +26,7 @@ def getIllustListByUid():
     if success:
         json = {"status": 1, "message": "Get success! %s" % message, "list": l}
     else:
-        json = {"status": 0, "message": "Get error..." + message}
+        json = {"status": 0, "message": "Get error... %s" % message}
     return json
 
 
