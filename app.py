@@ -30,5 +30,27 @@ def getIllustListByUid():
     return json
 
 
+@app.route('/getTrendingTags', methods=["GET"])
+def getTrendingTags():
+    l, success, message = myPixiv.getTrendingTags()
+    if success:
+        json = {"status": 1, "message": "Get success! %s" % message, "list": l}
+    else:
+        json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
+    return json
+
+
+@app.route('/getIllustRanking', methods=["POST"])
+def getIllustRanking():
+    # Get mode from posted json
+    mode = request.form["mode"]
+    l, success, message = myPixiv.getIllustRanking(mode=mode)
+    if success:
+        json = {"status": 1, "message": "Get success! %s" % message, "list": l}
+    else:
+        json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
+    return json
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -1,9 +1,9 @@
+import sched
+import threading
 import time
 
 import pixivpy3 as pixiv
 from gppt import GetPixivToken
-import sched
-import threading
 
 
 def singleton(cls):
@@ -110,6 +110,49 @@ class Pixiv:
 
         return l, success, msg
 
+    def getIllustRanking(self, mode="day", offset=0) -> (list, bool, str):
+        success = True
+        msg = None
+
+        l = []
+
+        # day, week, month, day_male, day_female, week_original, week_rookie, day_manga
+        res = self.pixivApi.illust_ranking(mode=mode, offset=offset)
+
+        illusts = res["illusts"]
+        if len(illusts) == 0:
+            success = False
+            msg = "Ranking retrieval failed!"
+        for item in illusts:
+            # Title encoding type Unicode
+            l.append({
+                "title": item["title"],
+                "url": packIllustUrl(item["id"]),
+            })
+
+        return l, success, msg
+
+    def getTrendingTags(self) -> (list, bool, str):
+        success = True
+        msg = None
+
+        l = []
+
+        res = self.pixivApi.trending_tags_illust()
+
+        tags = res["trend_tags"]
+        if len(tags) == 0:
+            success = False
+            msg = "Trend tags do not exist!"
+        for item in tags:
+            # Title encoding type Unicode
+            l.append({
+                "tag": item["tag"],
+                "translated_tag": item["translated_name"],
+            })
+
+        return l, success, msg
+
     def startPixivSession(self) -> bool:
         success = self.getToken()
         if not success:
@@ -122,6 +165,7 @@ class Pixiv:
         self.scheduler.enter(self.interval, 0, self.runRefreshTokenTask)
         t = threading.Thread(target=self.scheduler.run)
         t.start()
+        # Maybe we don't need this ?
         return success
 
     def runRefreshTokenTask(self) -> bool:
