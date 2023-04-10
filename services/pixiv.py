@@ -1,9 +1,9 @@
+import sched
+import threading
 import time
 
 import pixivpy3 as pixiv
 from gppt import GetPixivToken
-import sched
-import threading
 
 
 def singleton(cls):
@@ -83,6 +83,24 @@ class Pixiv:
 
         return success
 
+    def parseResponse(self, res) -> (list, bool, str):
+        success = True
+        msg = ""
+
+        l = []
+
+        if res["illusts"] is None:
+            success = False
+            msg = "uid does not exist!"
+        else:
+            for item in res["illusts"]:
+                # Title encoding type Unicode
+                l.append({
+                    "title": item["title"],
+                    "url": packIllustUrl(item["id"]),
+                })
+        return l, success, msg
+
     def getIllustListByUid(self, uid) -> (list, bool, str):
         success = True
         msg = uid
@@ -109,6 +127,71 @@ class Pixiv:
             offset = self.pixivApi.parse_qs(res["next_url"])["offset"]
 
         return l, success, msg
+
+    def getIllustRanking(self, mode="day", offset=0) -> (list, bool, str):
+        success = True
+        msg = None
+
+        l = []
+
+        res = self.pixivApi.illust_ranking(mode=mode, offset=offset)
+
+        illusts = res["illusts"]
+        if len(illusts) == 0:
+            success = False
+            msg = "Ranking retrieval failed!"
+        for item in illusts:
+            # Title encoding type Unicode
+            l.append({
+                "title": item["title"],
+                "url": packIllustUrl(item["id"]),
+            })
+
+        return l, success, msg
+
+    def getTrendingTags(self) -> (list, bool, str):
+        success = True
+        msg = None
+
+        l = []
+
+        res = self.pixivApi.trending_tags_illust()
+
+        tags = res["trend_tags"]
+        if len(tags) == 0:
+            success = False
+            msg = "Trend tags do not exist!"
+        for item in tags:
+            # Title encoding type Unicode
+            l.append({
+                "tag": item["tag"],
+                "translated_tag": item["translated_name"],
+            })
+
+        return l, success, msg
+
+    # @staticmethod
+    # def my_decorator(func):
+    #     def wrapper(*args, **kwargs):
+    #         success = True
+    #         msg = None
+    #         l = []
+    #
+    #         res = func(**kwargs)
+    #
+    #         keys = [*args]
+    #         tags = res[keys[0]]
+    #         if len(tags) == 0:
+    #             success = False
+    #             msg = "Trend tags do not exist!"
+    #         for item in tags:
+    #             # Title encoding type Unicode
+    #             l.append({
+    #                 "tag": item["tag"],
+    #                 "translated_tag": item["translated_name"],
+    #             })
+    #
+    #     return wrapper
 
     def startPixivSession(self) -> bool:
         success = self.getToken()
