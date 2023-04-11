@@ -13,14 +13,6 @@ WORKDIR /APP
 
 RUN apk --update-cache add \
     python3 \
-    python3-dev \
-    py3-pip \
-    gcc \
-    g++ \
-    curl \
-    bash && \
-    pip3 install -r requirements.txt && \
-    rm -rf .env && \
-    touch .env
+    py3-pip
 
 ENTRYPOINT sh run.sh $username $password
