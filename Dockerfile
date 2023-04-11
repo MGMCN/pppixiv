@@ -11,8 +11,4 @@ COPY . /APP
 
 WORKDIR /APP
 
-RUN apk --update-cache add \
-    python3 \
-    py3-pip
-
 ENTRYPOINT sh run.sh $username $password
