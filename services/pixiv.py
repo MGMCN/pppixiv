@@ -17,7 +17,7 @@ def singleton(cls):
     return get_instance
 
 
-def packIllustUrl(uid) -> str:
+def pack_illust_url(uid) -> str:
     return "https://www.pixiv.net/artworks/%s" % uid
 
 
@@ -35,7 +35,7 @@ class Pixiv:
         self.scheduler = sched.scheduler(time.time, time.sleep)
         self.interval = interval
 
-    def getToken(self) -> bool:
+    def get_token(self) -> bool:
         success = True
 
         retryCount = 0
@@ -54,7 +54,7 @@ class Pixiv:
             success = False
         return success
 
-    def refreshToken(self) -> bool:
+    def refresh_token(self) -> bool:
         refreshed = False
 
         try:
@@ -78,12 +78,12 @@ class Pixiv:
                 break
             except pixiv.utils.PixivError:
                 print('The token has expired and needs to be reset!')
-                success = self.refreshToken()
+                success = self.refresh_token()
             retryCount += 1
 
         return success
 
-    def getIllustListByUid(self, uid) -> (list, bool, str):
+    def get_illust_list_by_uid(self, uid) -> (list, bool, str):
         success = True
         msg = uid
 
@@ -102,7 +102,7 @@ class Pixiv:
                 # Title encoding type Unicode
                 l.append({
                     "title": item["title"],
-                    "url": packIllustUrl(item["id"]),
+                    "url": pack_illust_url(item["id"]),
                 })
             if res["next_url"] is None:
                 break
@@ -110,7 +110,7 @@ class Pixiv:
 
         return l, success, msg
 
-    def getIllustRanking(self, mode="day", offset=0) -> (list, bool, str):
+    def get_illust_ranking(self, mode="day", offset=0) -> (list, bool, str):
         success = True
         msg = None
 
@@ -127,12 +127,12 @@ class Pixiv:
             # Title encoding type Unicode
             l.append({
                 "title": item["title"],
-                "url": packIllustUrl(item["id"]),
+                "url": pack_illust_url(item["id"]),
             })
 
         return l, success, msg
 
-    def getTrendingTags(self) -> (list, bool, str):
+    def get_trending_tags(self) -> (list, bool, str):
         success = True
         msg = None
 
@@ -153,8 +153,8 @@ class Pixiv:
 
         return l, success, msg
 
-    def startPixivSession(self) -> bool:
-        success = self.getToken()
+    def start_pixiv_session(self) -> bool:
+        success = self.get_token()
         if not success:
             # Do we really need raise exception ? Or just retry and retry ?
             raise Exception('Get token error!')
@@ -162,20 +162,20 @@ class Pixiv:
         if not success:
             raise Exception('Authentication failed!')
         # Not graceful...
-        self.scheduler.enter(self.interval, 0, self.runRefreshTokenTask)
+        self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
         t = threading.Thread(target=self.scheduler.run)
         t.start()
         # Maybe we don't need this ?
         return success
 
-    def runRefreshTokenTask(self) -> bool:
-        success = self.refreshToken()
+    def run_refresh_token_task(self) -> bool:
+        success = self.refresh_token()
         if not success:
             raise Exception('Refresh token error!')
         success = self.authentication()
         if not success:
             raise Exception('Authentication failed!')
-        self.scheduler.enter(self.interval, 0, self.runRefreshTokenTask)
+        self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
 
         # Maybe we don't need this ?
         return success
