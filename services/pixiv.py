@@ -62,9 +62,9 @@ class Pixiv(BaseService):
         try:
             self.token = self.pixivTokenApi.refresh(refresh_token=self.token)["refresh_token"]
             refreshed = True
+            self.logger.info("Token refreshed successfully! -> %s", self.token)
         except ValueError:
             self.logger.info("Get error when refreshing the token!")
-        self.logger.info("Token refreshed successfully! -> %s", self.token)
 
         return refreshed
 
