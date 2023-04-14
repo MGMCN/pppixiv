@@ -60,9 +60,9 @@ def getIllustRanking():
 
 
 if __name__ == '__main__':
-    app.logger.info("Authorized on pixiv account %s", username)
+    app.logger.info("Authorized on pixiv account %s. Please wait for authentication.", username)
     success = myPixiv.start_pixiv_session()
     if success:
-        app.logger.info("Pixiv Login Complete")
-        app.logger.info("===============================")
-        app.run(host='0.0.0.0', port=5000, debug=True)
+        app.logger.info("                    Pixiv Login Complete.")
+        app.logger.info("======================================================================")
+        app.run(host='0.0.0.0', port=3333, debug=True)

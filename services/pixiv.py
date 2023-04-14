@@ -76,7 +76,7 @@ class Pixiv(BaseService):
             try:
                 self.pixivApi.auth(refresh_token=self.token)
                 success = True
-                self.logger.info("Authentication success!")
+                self.logger.info("                  Authentication success!")
                 break
             except pixiv.utils.PixivError:
                 self.logger.info("The token has expired and needs to be reset!")
