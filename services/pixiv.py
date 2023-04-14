@@ -45,12 +45,12 @@ class Pixiv(BaseService):
             try:
                 res = self.pixivTokenApi.login(headless=True, username=self.pixivUsername, password=self.pixivPassword)
                 self.token = res["refresh_token"]
+                self.logger.debug("get token -> %s", self.token)
                 break
             except ValueError:
-                self.logger.info("getToken error!")
+                self.logger.debug("getToken error!")
             time.sleep(0.5)
             retryCount += 1
-        self.logger.info("get token -> %s", self.token)
 
         if self.token is None:
             success = False
@@ -62,9 +62,9 @@ class Pixiv(BaseService):
         try:
             self.token = self.pixivTokenApi.refresh(refresh_token=self.token)["refresh_token"]
             refreshed = True
-            self.logger.info("Token refreshed successfully! -> %s", self.token)
+            self.logger.debug("Token refreshed successfully! -> %s", self.token)
         except ValueError:
-            self.logger.info("Get error when refreshing the token!")
+            self.logger.debug("Get error when refreshing the token!")
 
         return refreshed
 
@@ -76,10 +76,10 @@ class Pixiv(BaseService):
             try:
                 self.pixivApi.auth(refresh_token=self.token)
                 success = True
-                self.logger.info("                  Authentication success!")
+                self.logger.debug("Authentication success!")
                 break
             except pixiv.utils.PixivError:
-                self.logger.info("The token has expired and needs to be reset!")
+                self.logger.debug("The token has expired and needs to be reset!")
                 success = self.refresh_token()
             retryCount += 1
 
@@ -99,7 +99,7 @@ class Pixiv(BaseService):
             if len(illusts) == 0:
                 success = False
                 msg = "uid does not exist!"
-                self.logger.info("uid does not exist!")
+                self.logger.debug("uid does not exist!")
                 break
             for item in illusts:
                 # Title encoding type Unicode
@@ -107,7 +107,7 @@ class Pixiv(BaseService):
                     "title": item["title"],
                     "url": pack_illust_url(item["id"]),
                 })
-                self.logger.info("Parse item[id] -> %s", item["id"])
+                self.logger.debug("Parse item[id] -> %s", item["id"])
             if res["next_url"] is None:
                 break
             offset = self.pixivApi.parse_qs(res["next_url"])["offset"]
@@ -127,14 +127,14 @@ class Pixiv(BaseService):
         if len(illusts) == 0:
             success = False
             msg = "Ranking retrieval failed!"
-            self.logger.info("Ranking retrieval failed!")
+            self.logger.debug("Ranking retrieval failed!")
         for item in illusts:
             # Title encoding type Unicode
             l.append({
                 "title": item["title"],
                 "url": pack_illust_url(item["id"]),
             })
-            self.logger.info("Parse item[id] -> %s", item["id"])
+            self.logger.debug("Parse item[id] -> %s", item["id"])
         return l, success, msg
 
     def get_trending_tags(self) -> (list, bool, str):
@@ -149,14 +149,14 @@ class Pixiv(BaseService):
         if len(tags) == 0:
             success = False
             msg = "Trend tags do not exist!"
-            self.logger.info("Trend tags do not exist!")
+            self.logger.debug("Trend tags do not exist!")
         for item in tags:
             # Title encoding type Unicode
             l.append({
                 "tag": item["tag"],
                 "translated_tag": item["translated_name"],
             })
-            self.logger.info("Parse item[tag] -> %s", item["tag"])
+            self.logger.debug("Parse item[tag] -> %s", item["tag"])
         return l, success, msg
 
     def start_pixiv_session(self) -> bool:

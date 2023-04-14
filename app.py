@@ -9,13 +9,7 @@ from services.pixiv import Pixiv
 load_dotenv(verbose=True)
 
 app = Flask(__name__)
-# set app logger
-app.logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-handler = logging.StreamHandler()
-handler.setFormatter(formatter)
-app.logger.handlers.clear()
-app.logger.addHandler(handler)
+app.logger.setLevel(logging.DEBUG)
 
 username = os.getenv("username")
 password = os.getenv("password")
@@ -60,9 +54,9 @@ def getIllustRanking():
 
 
 if __name__ == '__main__':
-    app.logger.info("Authorized on pixiv account %s. Please wait for authentication.", username)
+    app.logger.debug("Authorized on pixiv account %s. Please wait for authentication.", username)
     success = myPixiv.start_pixiv_session()
     if success:
-        app.logger.info("                    Pixiv Login Complete.")
-        app.logger.info("======================================================================")
+        app.logger.debug("Pixiv Login Complete.")
+        app.logger.debug("=================================================================")
         app.run(host='0.0.0.0', port=5000, debug=True)
