@@ -1,15 +1,26 @@
-from flask import Flask, request
-from dotenv import load_dotenv
+import logging
 import os
+
+from dotenv import load_dotenv
+from flask import Flask, request
+
 from services.pixiv import Pixiv
 
 load_dotenv(verbose=True)
 
 app = Flask(__name__)
+# set app logger
+app.logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+app.logger.handlers.clear()
+app.logger.addHandler(handler)
+
 username = os.getenv("username")
 password = os.getenv("password")
-myPixiv = Pixiv(username=username, password=password, interval=3500)
-myPixiv.start_pixiv_session()
+myPixiv = Pixiv(service_name="pixiv", username=username, password=password, interval=3500)
+myPixiv.set_logger(app.logger)
 
 
 def pack_json_data(l, success, message) -> dict:
@@ -49,4 +60,9 @@ def getIllustRanking():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.logger.info("Authorized on pixiv account %s", username)
+    success = myPixiv.start_pixiv_session()
+    if success:
+        app.logger.info("Pixiv Login Complete")
+        app.logger.info("===============================")
+        app.run(host='0.0.0.0', port=5000, debug=True)
