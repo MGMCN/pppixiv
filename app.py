@@ -30,7 +30,7 @@ def lsp():
 def getIllustListByUid():
     # Get uid from posted json
     uid = request.form["uid"]
-    l, success, message = myPixiv.get_illust_list_by_uid(uid)
+    l, success, message = myPixiv.get_illust_list_by_uid(uid=uid)
     return pack_json_data(l, success, message)
 
 
