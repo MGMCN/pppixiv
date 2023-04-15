@@ -1,11 +1,10 @@
 import sched
 import threading
 import time
-from typing import Callable, List, Tuple, Union
+from typing import Union
 
 import pixivpy3 as pixiv
 from gppt import GetPixivToken
-
 from .base import BaseService
 
 
@@ -21,20 +20,16 @@ def singleton(cls):
 
 
 def pack_illust_url(uid) -> str:
-    return f"https://www.pixiv.net/artworks/{uid}"
+    return "https://www.pixiv.net/artworks/%s" % uid
 
 
 @singleton
 class Pixiv(BaseService):
 
-    def __init__(self, service_name: str,
-                 username: str,
-                 password: str,
-                 retry: int = 5,
-                 interval: int = 3599,):
+    def __init__(self, service_name, username, password, retry=5, interval=3599):
         super().__init__(service_name=service_name)
-        self._pixivUsername = username
-        self._pixivPassword = password
+        self.pixivUsername = username
+        self.pixivPassword = password
         # Init pixiv api
         self.pixivTokenApi = GetPixivToken()
         self.pixivApi = pixiv.AppPixivAPI()
@@ -43,58 +38,53 @@ class Pixiv(BaseService):
         self.scheduler = sched.scheduler(time.time, time.sleep)
         self.interval = interval
 
-    def _retry_on_failure(self, func: Callable, *args, **kwargs) -> Union[None, bool, str]:
+    def get_token(self) -> bool:
+        success = True
+
         retries_count = 0
-        result = None
         while retries_count < self.retry:
             try:
-                result = func(*args, **kwargs)
+                res = self.pixivTokenApi.login(headless=True, username=self.pixivUsername, password=self.pixivPassword)
+                self.token = res["refresh_token"]
+                self.logger.debug(f"get token -> {self.token}")
                 break
-            except (ValueError, pixiv.utils.PixivError) as e:
-                self.logger.debug(f"Error occurred in {func.__name__}: {str(e)}")
-                time.sleep(0.5)
-                retries_count += 1
+            except ValueError:
+                self.logger.debug("getToken error!")
+            time.sleep(0.5)
+            retries_count += 1
 
-        return result
-
-    def get_token(self) -> bool:
-        def login():
-            res = self.pixivTokenApi.login(
-                headless=True, username=self._pixivUsername, password=self._pixivPassword
-            )
-            self.token = res["refresh_token"]
-            self.logger.debug(f"get token -> {self.token}")
-
-        self._retry_on_failure(login)
-
-        return self.token is not None
-
+        if self.token is None:
+            success = False
+        return success
 
     def refresh_token(self) -> bool:
-        def refresh():
-            self.token = self.pixivTokenApi.refresh(
-                refresh_token=self.token)["refresh_token"]
+        refreshed = False
+
+        try:
+            self.token = self.pixivTokenApi.refresh(refresh_token=self.token)["refresh_token"]
+            refreshed = True
             self.logger.debug(f"Token refreshed successfully! -> {self.token}")
+        except ValueError:
+            self.logger.debug("Get error when refreshing the token!")
 
-        self._retry_on_failure(refresh)
-
-        return self.token is not None
+        return refreshed
 
     def authentication(self) -> bool:
-        def auth():
-            self.pixivApi.auth(refresh_token=self.token)
-            self.logger.debug("Authentication success!")
+        success = True
 
-        def reset_token():
-            self.logger.debug("The token has expired and needs to be reset!")
-            self.refresh_token()
-
-        while True:
+        retryCount = 0
+        while retryCount < self.retry:
             try:
-                self._retry_on_failure(auth)
-                return True
+                self.pixivApi.auth(refresh_token=self.token)
+                success = True
+                self.logger.debug("Authentication success!")
+                break
             except pixiv.utils.PixivError:
-                reset_token()
+                self.logger.debug("The token has expired and needs to be reset!")
+                success = self.refresh_token()
+            retryCount += 1
+
+        return success
 
     def get_illust_list_by_uid(self, uid) -> (list, bool, str):
         success = True
@@ -145,7 +135,7 @@ class Pixiv(BaseService):
                 "title": item["title"],
                 "url": pack_illust_url(item["id"]),
             })
-            self.logger.debug(f"Parse item[id] -> {item['id']}")
+            self.logger.debug("Parse item[id] -> item['id']")
         return l, success, msg
 
     def get_trending_tags(self) -> (list, bool, str):
@@ -167,9 +157,8 @@ class Pixiv(BaseService):
                 "tag": item["tag"],
                 "translated_tag": item["translated_name"],
             })
-            self.logger.debug(f"Parse item[tag] -> {item['tag']}")
+            self.logger.debug(f"Parse item[tag] -> {item['tag']}", )
         return l, success, msg
-
 
     def get_illust_url(self, illust_id: Union[int, str]) -> (list, bool, str):
         success = True
@@ -196,24 +185,27 @@ class Pixiv(BaseService):
         return l, success, msg
 
     def start_pixiv_session(self) -> bool:
-        if not self.get_token():
+        success = self.get_token()
+        if not success:
+            # Do we really need raise exception? Or just retry and retry?
             raise Exception('Get token error!')
-        if not self.authentication():
+        success = self.authentication()
+        if not success:
             raise Exception('Authentication failed!')
         # Not graceful...
         self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
         t = threading.Thread(target=self.scheduler.run)
         t.start()
-
         # Maybe we don't need this?
-        return True
+        return success
 
     def run_refresh_token_task(self) -> bool:
-        if not self.refresh_token():
+        success = self.refresh_token()
+        if not success:
             raise Exception('Refresh token error!')
-        if not self.authentication():
+        success = self.authentication()
+        if not success:
             raise Exception('Authentication failed!')
-        # Will this scheduler resetting impact the performance after a long time?
         self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
-
-        return True
+        # Maybe we don't need this?
+        return success

@@ -40,10 +40,10 @@ def getIllustRanking():
     l, success, message = mybpPixiv.get_illust_ranking(mode=mode)
     return pack_json_data(l, success, message)
 
-@pixiv_router.route('/getIllustUrl', methods=["POST"])
-def getIllustUrl():
+
+@pixiv_router.route('/get_illust_url', methods=["POST"])
+def get_illust_url():
     # Get mode from posted json
     illust_id = request.form["illust_id"]
     l, success, message = mybpPixiv.get_illust_url(illust_id=illust_id)
     return pack_json_data(l, success, message)
-
