@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 
-from router.pixiv_router import pixiv, set_pixiv_api
+from router.pixiv_router import pixiv_router, router_set_pixiv_api
 from services.pixiv import Pixiv
 
 load_dotenv(verbose=True)
@@ -17,7 +17,7 @@ password = os.getenv("password")
 myPixiv = Pixiv(service_name="pixiv", username=username, password=password, interval=3500)
 myPixiv.set_logger(app.logger)
 
-app.register_blueprint(pixiv)
+app.register_blueprint(pixiv_router)
 
 
 # Only to see if this server is running correctly
@@ -28,7 +28,7 @@ def lsp():
 
 if __name__ == '__main__':
     # Not graceful
-    set_pixiv_api(myPixiv)
+    router_set_pixiv_api(myPixiv)
     app.logger.debug("Authorized on pixiv account %s. Please wait for authentication.", username)
     success = myPixiv.start_pixiv_session()
     if success:

@@ -1,12 +1,12 @@
 from flask import Blueprint, request
 
-pixiv = Blueprint('pixiv', __name__)
+pixiv_router = Blueprint('pixiv_router', __name__)
 
 # Not graceful
 mybpPixiv = None
 
 
-def set_pixiv_api(api):
+def router_set_pixiv_api(api):
     global mybpPixiv
     mybpPixiv = api
 
@@ -19,7 +19,7 @@ def pack_json_data(l, success, message) -> dict:
     return json
 
 
-@pixiv.route('/getIllustListByUid', methods=["POST"])
+@pixiv_router.route('/getIllustListByUid', methods=["POST"])
 def getIllustListByUid():
     # Get uid from posted json
     uid = request.form["uid"]
@@ -27,13 +27,13 @@ def getIllustListByUid():
     return pack_json_data(l, success, message)
 
 
-@pixiv.route('/getTrendingTags', methods=["GET"])
+@pixiv_router.route('/getTrendingTags', methods=["GET"])
 def getTrendingTags():
     l, success, message = mybpPixiv.get_trending_tags()
     return pack_json_data(l, success, message)
 
 
-@pixiv.route('/getIllustRanking', methods=["POST"])
+@pixiv_router.route('/getIllustRanking', methods=["POST"])
 def getIllustRanking():
     # Get mode from posted json
     mode = request.form["mode"]
