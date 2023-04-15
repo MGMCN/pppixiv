@@ -9,8 +9,11 @@ from services.pixiv import Pixiv
 
 
 class App(Flask):
-    def __init__(self, name):
+    def __init__(self, name: str):
         super().__init__(name)
+        self.myPixiv = None
+        self.password = None
+        self.username = None
         self.init()
 
     def init(self):
