@@ -1,56 +1,28 @@
-from flask import Flask, request
-from dotenv import load_dotenv
+import logging
 import os
+
+from dotenv import load_dotenv
+from flask import Flask
+
+from router.pixiv_router import pixiv_router, router_set_pixiv_api
 from services.pixiv import Pixiv
 
-load_dotenv(verbose=True)
 
-app = Flask(__name__)
-username = os.getenv("username")
-password = os.getenv("password")
-myPixiv = Pixiv(username=username, password=password, interval=3500)
-myPixiv.startPixivSession()
+class App(Flask):
+    def __init__(self, name):
+        super().__init__(name)
+        self.init()
 
+    def init(self):
+        load_dotenv(verbose=True)
+        self.logger.setLevel(logging.DEBUG)
+        self.username = os.getenv("username")
+        self.password = os.getenv("password")
+        self.myPixiv = Pixiv(service_name="pixiv", username=self.username, password=self.password, interval=3500)
+        self.register_blueprint(pixiv_router)
+        self.pass_context()
 
-# Only to see if this server is running correctly
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-
-@app.route('/getIllustListByUid', methods=["POST"])
-def getIllustListByUid():
-    # Get uid from posted json
-    uid = request.form["uid"]
-    l, success, message = myPixiv.getIllustListByUid(uid)
-    if success:
-        json = {"status": 1, "message": "Get success! %s" % message, "list": l}
-    else:
-        json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
-    return json
-
-
-@app.route('/getTrendingTags', methods=["GET"])
-def getTrendingTags():
-    l, success, message = myPixiv.getTrendingTags()
-    if success:
-        json = {"status": 1, "message": "Get success! %s" % message, "list": l}
-    else:
-        json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
-    return json
-
-
-@app.route('/getIllustRanking', methods=["POST"])
-def getIllustRanking():
-    # Get mode from posted json
-    mode = request.form["mode"]
-    l, success, message = myPixiv.getIllustRanking(mode=mode)
-    if success:
-        json = {"status": 1, "message": "Get success! %s" % message, "list": l}
-    else:
-        json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
-    return json
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    def pass_context(self):
+        self.myPixiv.set_logger(self.logger)
+        # Not graceful
+        router_set_pixiv_api(self.myPixiv)
