@@ -69,5 +69,16 @@ You will get 👇🏻
   ]
 }
 ```
+Visit```http://ip:port/getIllustDownloadUrl```and post data ```{"illust_id":"xxx"}```.
+You will get 👇🏻
+```json lines
+{
+  "status": 1,
+  "message": "message",
+  "list": [
+    {"illust_id": "illust_id", "image_url": "image_download_url"},
+  ]
+}
+```
 ## Contributing
 Contributions must be available on a separately named branch based on the latest version of the main branch.
