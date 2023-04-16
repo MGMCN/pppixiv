@@ -13,9 +13,9 @@ def router_set_pixiv_api(api):
 
 def pack_json_data(l, success, message) -> dict:
     if success:
-        json = {"status": 1, "message": "Get success! %s" % message, "list": l}
+        json = {"status": 1, "message": f"Get success! {message}", "list": l}
     else:
-        json = {"status": 0, "message": "Get error... %s" % message, "list": {}}
+        json = {"status": 0, "message": f"Get error... {message}", "list": {}}
     return json
 
 
@@ -38,4 +38,12 @@ def getIllustRanking():
     # Get mode from posted json
     mode = request.form["mode"]
     l, success, message = mybpPixiv.get_illust_ranking(mode=mode)
+    return pack_json_data(l, success, message)
+
+
+@pixiv_router.route('/getIllustDownloadUrl', methods=["POST"])
+def getIllustDownloadUrl():
+    # Get mode from posted json
+    illust_id = request.form["illust_id"]
+    l, success, message = mybpPixiv.get_illust_download_url(illust_id=illust_id)
     return pack_json_data(l, success, message)

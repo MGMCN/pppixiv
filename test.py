@@ -8,3 +8,6 @@ print('call getIllustRanking api', res.text)
 
 res = requests.get("http://127.0.0.1:3333/getTrendingTags")
 print('call getTrendingTags api', res.text)
+
+res = requests.post("http://127.0.0.1:3333/getIllustDownloadUrl", data={"illust_id": "59580629"})
+print('call getIllustDownloadUrl api', res.text)
