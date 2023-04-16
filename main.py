@@ -10,9 +10,14 @@ def lsp():
 
 
 if __name__ == '__main__':
+    app.logger.debug("=====================================================================================")
     app.logger.debug("Authorized on pixiv account %s. Please wait for authentication.", app.username)
-    success = app.myPixiv.start_pixiv_session()
+    success, msg = app.myPixiv.start_pixiv_session()
     if success:
         app.logger.debug("Pixiv Login Complete.")
-        app.logger.debug("=================================================================")
+        app.logger.debug("=====================================================================================")
         app.run(host='0.0.0.0', port=5000)
+    else:
+        app.logger.debug(msg)
+        app.logger.debug("Application ends gracefully.")
+        app.logger.debug("=====================================================================================")
