@@ -79,6 +79,7 @@ class Pixiv(BaseService):
                 self.logger.debug("Authentication success!")
                 break
             except pixiv.utils.PixivError:
+                # Maybe we do not need this?
                 self.logger.debug("The token has expired and needs to be reset!")
                 success = self.refresh_token()
             retryCount += 1
@@ -203,28 +204,31 @@ class Pixiv(BaseService):
             self.logger.debug(msg)
         return l, success, msg
 
-    def start_pixiv_session(self) -> bool:
+    def start_pixiv_session(self) -> (bool, str):
+        msg = "lsp"
         success = self.get_token()
         if not success:
             # Do we really need raise exception? Or just retry and retry?
-            raise Exception('Get token error!')
-        success = self.authentication()
-        if not success:
-            raise Exception('Authentication failed!')
-        # Not graceful...
-        self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
-        t = threading.Thread(target=self.scheduler.run)
-        t.start()
-        # Maybe we don't need this?
-        return success
+            msg = "Failed to get token, please check if you are blocked by pixiv or possibly because of reCAPTCHA v2 " \
+                  "detection."
+        else:
+            success = self.authentication()
+            if not success:
+                msg = "For unknown reasons, the authentication failed."
+            else:
+                # Not graceful...
+                self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
+                t = threading.Thread(target=self.scheduler.run)
+                t.start()
+        return success, msg
 
-    def run_refresh_token_task(self) -> bool:
-        success = self.refresh_token()
-        if not success:
-            raise Exception('Refresh token error!')
-        success = self.authentication()
-        if not success:
-            raise Exception('Authentication failed!')
+    def run_refresh_token_task(self):
+        success = False
+        while not success:
+            success = self.refresh_token()
+            self.logger.debug(f"Token refreshed -> {success}")
+        success = False
+        while not success:
+            success = self.authentication()
+            self.logger.debug(f"Authentication success -> {success}")
         self.scheduler.enter(self.interval, 0, self.run_refresh_token_task)
-        # Maybe we don't need this?
-        return success
