@@ -1,7 +1,6 @@
 import sched
 import threading
 import time
-from typing import Union
 
 import pixivpy3 as pixiv
 from gppt import GetPixivToken
@@ -20,7 +19,7 @@ def singleton(cls):
 
 
 def pack_illust_url(uid) -> str:
-    return "https://www.pixiv.net/artworks/%s" % uid
+    return f"https://www.pixiv.net/artworks/{uid}"
 
 
 @singleton
@@ -135,7 +134,7 @@ class Pixiv(BaseService):
                 "title": item["title"],
                 "url": pack_illust_url(item["id"]),
             })
-            self.logger.debug("Parse item[id] -> item['id']")
+            self.logger.debug(f"Parse item[id] -> {item['id']}")
         return l, success, msg
 
     def get_trending_tags(self) -> (list, bool, str):
@@ -160,14 +159,11 @@ class Pixiv(BaseService):
             self.logger.debug(f"Parse item[tag] -> {item['tag']}", )
         return l, success, msg
 
-    def get_illust_url(self, illust_id: Union[int, str]) -> (list, bool, str):
+    def get_illust_download_url(self, illust_id) -> (list, bool, str):
         success = True
         msg = None
 
         l = []
-
-        if not isinstance(illust_id, int):
-            illust_id = int(illust_id)
 
         res = self.pixivApi.illust_detail(illust_id)
 
@@ -176,11 +172,12 @@ class Pixiv(BaseService):
             success = False
             msg = "Illustration do not exist!"
             self.logger.debug("Illustration do not exist!")
-        # Title encoding type Unicode
-        l.append({
-            "illust_id": illust["id"],
-            "image_url": illust["image_urls"]["large"],
-        })
+        else:
+            # Title encoding type Unicode
+            l.append({
+                "illust_id": illust["id"],
+                "image_url": illust["image_urls"]["large"],
+            })
         self.logger.debug(f"Parse item[illust_id] -> {illust['id']}")
         return l, success, msg
 
