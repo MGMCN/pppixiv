@@ -76,7 +76,7 @@ You will get 👇🏻
   "status": 1,
   "message": "message",
   "list": [
-    {"illust_id": "illust_id", "image_url": "image_download_url"},
+    {"title": "image_title", "url": "image_download_url"},
   ]
 }
 ```

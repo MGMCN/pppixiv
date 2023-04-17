@@ -194,10 +194,10 @@ class Pixiv(BaseService):
             else:
                 # Title encoding type Unicode
                 l.append({
-                    "illust_id": illust["id"],
-                    "image_url": illust["image_urls"]["large"],
+                    "title": illust["title"],
+                    "url": illust["image_urls"]["large"],
                 })
-            self.logger.debug(f"Parse item[illust_id] -> {illust['id']}")
+            self.logger.debug(f"Parse item[title] -> {illust['title']}")
         else:
             success = False
             msg = f"{illust_id} do not exist!"
