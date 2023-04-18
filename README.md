@@ -4,8 +4,13 @@
 [![issue](https://img.shields.io/github/issues/MGMCN/pppixiv?logo=github)](https://github.com/MGMCN/pppixiv/issues?logo=github)
 [![license](https://img.shields.io/github/license/MGMCN/pppixiv)](https://github.com/MGMCN/pppixiv/blob/main/LICENSE)
 ![last_commit](https://img.shields.io/github/last-commit/MGMCN/pppixiv?color=red&logo=github)
-  
-Get links to all illustrations by a particular artist on pixiv.
+
+Get links to pixiv illustrations and links to download illustrations via our api. 
+Please note that this project is a subproject of [tg-dumb-bot](https://github.com/hackroid/tg-dumb-bot). Since the current api is designed for tg-dumb-bot, you don't have easy access to the links we return (telegram comes with previews). 
+For example, you need to call the pixivAPI variable inside our service to use the download link. 
+Also you can modify our source code directly. 
+We will provide more features for this project later.
+
 ## Usage
 ### Build with Docker
 ```bash
