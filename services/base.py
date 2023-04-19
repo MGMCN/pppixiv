@@ -8,3 +8,6 @@ class BaseService:
 
     def set_logger(self, logger: logging.Logger):
         self.logger = logger
+
+    def get_service_name(self) -> str:
+        return self.serviceName
