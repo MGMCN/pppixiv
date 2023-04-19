@@ -11,9 +11,6 @@ from services.pixiv import Pixiv
 class App(Flask):
     def __init__(self, name: str):
         super().__init__(name)
-        self.myPixiv = None
-        self.password = None
-        self.username = None
         self.init()
 
     def init(self):
@@ -24,6 +21,10 @@ class App(Flask):
         self.myPixiv = Pixiv(service_name="pixiv", username=self.username, password=self.password, interval=3500)
         self.register_blueprint(pixiv_router)
         self.pass_context()
+
+    def run_services(self) -> (bool, str):
+        success, msg = self.myPixiv.start_pixiv_session()
+        return success, msg
 
     def pass_context(self):
         self.myPixiv.set_logger(self.logger)
