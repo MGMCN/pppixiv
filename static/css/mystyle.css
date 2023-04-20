@@ -1,0 +1,69 @@
+html, body, .container-fluid, .row, .left-div, .right-div {
+    height: 100%;
+}
+.border-div {
+    border-radius: 0.25rem;
+    padding: 20px;
+}
+
+/* right div */
+.left-div {
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6; /* 添加该行 */
+}
+
+/* left div */
+.right-div {
+    background-color: #fff;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    gap: 20px;
+}
+
+/* nav */
+.navbar {
+    background-color: #0096D6;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.text-white {
+    color: #fff;
+}
+
+/* original circle */
+.status-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-left: 5px;
+    padding: 5px;
+    float: right;
+}
+
+/* downloaded circle */
+.status-circle-complete {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green;
+    margin-left: 5px;
+    padding: 5px;
+    float: right;
+}
+
+/* failed circle */
+.status-circle-failed {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    margin-left: 5px;
+    padding: 5px;
+    float: right;
+}
