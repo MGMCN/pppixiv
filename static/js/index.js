@@ -51,7 +51,7 @@ searchBtn.addEventListener('click', function() {
 downloadBtn.addEventListener('click', function() {
     // ?
     if (global_list.length === 0){
-        alert("Download list is empty!")
+        alert("Download list is empty!");
     }else{
         global_list.forEach(function(item,index) {
         var title = item.title;
