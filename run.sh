@@ -5,4 +5,6 @@ rm -rf .env
 touch .env
 echo "username=$1" >> .env
 echo "password=$2" >> .env
+rm -rf Illusts
+mkdir Illusts
 python3 main.py

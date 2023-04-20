@@ -1,6 +1,8 @@
+import random
 import sched
 import threading
 import time
+import re
 
 import pixivpy3 as pixiv
 from gppt import GetPixivToken
@@ -100,15 +102,17 @@ class Pixiv(BaseService):
             if res.illusts is not None:
                 illusts = res["illusts"]
                 if len(illusts) == 0:
-                    success = False
-                    msg = "Get illusts error!"
-                    self.logger.debug(msg)
+                    if len(l) == 0:
+                        success = False
+                        msg = "Get illusts error!"
+                        self.logger.debug(msg)
                     break
                 for item in illusts:
                     # Title encoding type Unicode
                     l.append({
                         "title": item["title"],
                         "url": pack_illust_url(item["id"]),
+                        "download_url": item["image_urls"]["large"],
                     })
                     self.logger.debug(f"Parse item[id] -> {item['id']}")
                 if res["next_url"] is None:
@@ -142,6 +146,7 @@ class Pixiv(BaseService):
                 l.append({
                     "title": item["title"],
                     "url": pack_illust_url(item["id"]),
+                    "download_url": item["image_urls"]["large"],
                 })
                 self.logger.debug(f"Parse item[id] -> {item['id']}")
         else:
@@ -195,7 +200,8 @@ class Pixiv(BaseService):
                 # Title encoding type Unicode
                 l.append({
                     "title": illust["title"],
-                    "url": illust["image_urls"]["large"],
+                    "url": pack_illust_url(illust_id),
+                    "download_url": illust["image_urls"]["large"],
                 })
             self.logger.debug(f"Parse item[title] -> {illust['title']}")
         else:
@@ -203,6 +209,26 @@ class Pixiv(BaseService):
             msg = f"{illust_id} do not exist!"
             self.logger.debug(msg)
         return l, success, msg
+
+    def download_illust(self, url, file_name) -> (bool, str):
+        msg = "Download illust success!"
+        try:
+            file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
+            # 1/10000 Not graceful
+            file_name += str(random.randint(1, 100))
+            file_name += "_"
+            file_name += str(random.randint(1, 100))
+            file_name += "_"
+            self.logger.debug(f"file_name -> {file_name}")
+            success = self.pixivApi.download(url=url, path=".",
+                                             fname="Illusts/" + file_name + ".jpg")
+        except:
+            # Exception type ?
+            success = False
+        if not success:
+            msg = "Download illust failed!"
+        self.logger.debug(msg)
+        return success, msg
 
     def start_pixiv_session(self) -> (bool, str):
         msg = "lsp"
