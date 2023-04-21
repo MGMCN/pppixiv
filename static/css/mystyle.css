@@ -7,15 +7,22 @@ html, body, .container-fluid, .row, .left-div, .right-div {
     padding: 20px;
 }
 
-/* right div */
+/* left div */
 .left-div {
     background-color: #f8f9fa;
     border-right: 1px solid #dee2e6; /* 添加该行 */
 }
 
-/* left div */
+/* right div */
 .right-div {
     background-color: #fff;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+.right-div::-webkit-scrollbar {
+    width: 0px; /* Hide scrollbar for Chrome, Safari, and Opera */
 }
 
 .button-group {
