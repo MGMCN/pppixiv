@@ -8,6 +8,8 @@ import pixivpy3 as pixiv
 from gppt import GetPixivToken
 from .base import BaseService
 
+from .parser.parser_factory import ParserFactory
+
 
 def singleton(cls):
     instances = {}
@@ -18,10 +20,6 @@ def singleton(cls):
         return instances[cls]
 
     return get_instance
-
-
-def pack_illust_url(uid) -> str:
-    return f"https://www.pixiv.net/artworks/{uid}"
 
 
 @singleton
@@ -38,6 +36,14 @@ class Pixiv(BaseService):
         self.retry = retry
         self.scheduler = sched.scheduler(time.time, time.sleep)
         self.interval = interval
+        # Init parser
+        self.tagParser = ParserFactory.create_parser("tags")
+        self.illustParser = ParserFactory.create_parser("illusts")
+
+    def set_logger(self, logger):
+        super().set_logger(logger)
+        self.tagParser.set_logger(logger)
+        self.illustParser.set_logger(logger)
 
     def get_token(self) -> bool:
         success = True
@@ -107,14 +113,7 @@ class Pixiv(BaseService):
                         msg = "Get illusts error!"
                         self.logger.debug(msg)
                     break
-                for item in illusts:
-                    # Title encoding type Unicode
-                    l.append({
-                        "title": item["title"],
-                        "url": pack_illust_url(item["id"]),
-                        "download_url": item["image_urls"]["large"],
-                    })
-                    self.logger.debug(f"Parse item[id] -> {item['id']}")
+                l.extend(self.illustParser.parse(illusts))
                 if res["next_url"] is None:
                     break
                 offset = self.pixivApi.parse_qs(res["next_url"])["offset"]
@@ -141,14 +140,8 @@ class Pixiv(BaseService):
                 success = False
                 msg = "Ranking retrieval failed!"
                 self.logger.debug(msg)
-            for item in illusts:
-                # Title encoding type Unicode
-                l.append({
-                    "title": item["title"],
-                    "url": pack_illust_url(item["id"]),
-                    "download_url": item["image_urls"]["large"],
-                })
-                self.logger.debug(f"Parse item[id] -> {item['id']}")
+            else:
+                l.extend(self.illustParser.parse(illusts))
         else:
             success = False
             msg = f"{mode} do not exist!"
@@ -169,13 +162,8 @@ class Pixiv(BaseService):
                 success = False
                 msg = "Get trend tags error!"
                 self.logger.debug(msg)
-            for item in tags:
-                # Title encoding type Unicode
-                l.append({
-                    "tag": item["tag"],
-                    "translated_tag": item["translated_name"],
-                })
-                self.logger.debug(f"Parse item[tag] -> {item['tag']}")
+            else:
+                l.extend(self.tagParser.parse(tags))
         else:
             success = False
             msg = "Trend tags do not exist!"
@@ -192,18 +180,7 @@ class Pixiv(BaseService):
 
         if res.illust is not None:
             illust = res["illust"]
-            if len(illust) == 0:
-                success = False
-                msg = "Get illustration error!"
-                self.logger.debug(msg)
-            else:
-                # Title encoding type Unicode
-                l.append({
-                    "title": illust["title"],
-                    "url": pack_illust_url(illust_id),
-                    "download_url": illust["image_urls"]["large"],
-                })
-            self.logger.debug(f"Parse item[title] -> {illust['title']}")
+            l.extend(self.illustParser.parse([illust]))
         else:
             success = False
             msg = f"{illust_id} do not exist!"
@@ -214,8 +191,8 @@ class Pixiv(BaseService):
         msg = "Download illust success!"
         try:
             file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
-            # 1/10000 Not graceful
-            file_name += str(random.randint(1, 100))
+            # 1/100000 Not graceful
+            file_name += str(random.randint(1, 1000))
             file_name += "_"
             file_name += str(random.randint(1, 100))
             file_name += "_"
