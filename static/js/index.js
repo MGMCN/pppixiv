@@ -26,11 +26,11 @@ searchBtn.addEventListener('click', function () {
     xhr.onload = function () {
         if (this.status === 200) {
             var data = JSON.parse(this.responseText);
-            global_list = data.list;
             var status = data.status;
             var message = data.message;
             if (status === 1) {
                 var render_html = "";
+                global_list = data.list;
                 global_list.forEach(function (item) {
                     var title = item.title;
                     var url = item.url
