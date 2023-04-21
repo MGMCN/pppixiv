@@ -140,7 +140,8 @@ class Pixiv(BaseService):
                 success = False
                 msg = "Ranking retrieval failed!"
                 self.logger.debug(msg)
-            l.extend(self.illustParser.parse(illusts))
+            else:
+                l.extend(self.illustParser.parse(illusts))
         else:
             success = False
             msg = f"{mode} do not exist!"
@@ -161,7 +162,8 @@ class Pixiv(BaseService):
                 success = False
                 msg = "Get trend tags error!"
                 self.logger.debug(msg)
-            l.extend(self.tagParser.parse(tags))
+            else:
+                l.extend(self.tagParser.parse(tags))
         else:
             success = False
             msg = "Trend tags do not exist!"
