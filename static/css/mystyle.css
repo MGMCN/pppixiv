@@ -10,7 +10,7 @@ html, body, .container-fluid, .row, .left-div, .right-div {
 /* left div */
 .left-div {
     background-color: #f8f9fa;
-    border-right: 1px solid #dee2e6; /* 添加该行 */
+    border-right: 1px solid #dee2e6;
 }
 
 /* right div */
