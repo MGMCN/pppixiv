@@ -1,6 +1,7 @@
 html, body, .container-fluid, .row, .left-div, .right-div {
     height: 100%;
 }
+
 .border-div {
     border-radius: 0.25rem;
     padding: 20px;
