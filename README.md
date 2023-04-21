@@ -16,10 +16,10 @@ We will provide more features for this project later.
 ```bash
 # build locally
 $ docker build . -t pixiv
-# run on detach
-$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" pixiv
+# run on detach (notice : -v will specify the folder where the illustrations will be downloaded)
+$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts pixiv
 # run in foreground
-$ docker run -it -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" pixiv
+$ docker run -it -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts pixiv
 ```
 If you successfully run this image up, you can run the test.py file to see the output. The first time will be slower because you have to get the pixiv token.
 ```bash
@@ -28,11 +28,19 @@ $ python3 test.py # Make sure you have the requests library installed
 ### Use DockerHub Image
 ```bash
 $ docker pull godmountain/pppixiv:latest
-$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" godmountain/pppixiv:latest
+$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
 ```
 
 ## Visit our dashboard
 Visit```http://ip:port/dashboard```.You will see 👇🏻
+Then enter the uid and click the search button, all the illustrations of the user with the specified uid will be searched and displayed on the right side.  
+
+<img src="image/search.jpg" width = "883" height = "660"/>   
+  
+Click the download button and all illustrations will be downloaded. If the download is successful, the gray dot on the right will turn green. Failed downloads will turn red.  
+
+<img src="image/download.jpg" width = "883" height = "660"/>  
+
 ## Api for accessing our pixiv services
 Visit```http://ip:port/getIllustListByUid```and post data ```{"uid":"xxx"}```.You will get 👇🏻
 > status : 0 stands for failure while 1 stands for success  
