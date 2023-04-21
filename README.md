@@ -31,6 +31,8 @@ $ docker pull godmountain/pppixiv:latest
 $ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" godmountain/pppixiv:latest
 ```
 
+## Visit our dashboard
+Visit```http://ip:port/dashboard```.You will see 👇🏻
 ## Api for accessing our pixiv services
 Visit```http://ip:port/getIllustListByUid```and post data ```{"uid":"xxx"}```.You will get 👇🏻
 > status : 0 stands for failure while 1 stands for success  
@@ -41,7 +43,7 @@ Visit```http://ip:port/getIllustListByUid```and post data ```{"uid":"xxx"}```.Yo
   "status": 1,
   "message": "message",
   "list": [
-    {"title": "title1", "url": "url1"},
+    {"title": "title1", "url": "preview_url", "download_url":  "download_url"},
     {},
     {},
   ]
@@ -54,7 +56,7 @@ Visit```http://ip:port/getIllustRanking```and post data ```{"mode":"xxx"}```. (W
   "status": 1,
   "message": "message",
   "list": [
-    {"title": "title1", "url": "url1"},
+    {"title": "title1", "url": "preview_url", "download_url":  "download_url"},
     {},
     {},
   ]
@@ -81,7 +83,7 @@ You will get 👇🏻
   "status": 1,
   "message": "message",
   "list": [
-    {"title": "image_title", "url": "image_download_url"},
+    {"title": "title", "url": "preview_url", "download_url":  "download_url"},
   ]
 }
 ```
