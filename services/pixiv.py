@@ -191,8 +191,8 @@ class Pixiv(BaseService):
         msg = "Download illust success!"
         try:
             file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
-            # 1/10000 Not graceful
-            file_name += str(random.randint(1, 100))
+            # 1/100000 Not graceful
+            file_name += str(random.randint(1, 1000))
             file_name += "_"
             file_name += str(random.randint(1, 100))
             file_name += "_"
