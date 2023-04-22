@@ -58,7 +58,7 @@ username=xxx
 password=xxx
 ```
 Add chromedriver to your environment variable. (Notice : The chromedriver version should be the same as the chrome browser you downloaded.) Please google how to set chromedriver environment variables by yourself. 
-Then execute the following two scripts after you have set up chromedriver.
+Then execute the following two commands after you have set up chromedriver.
 ```bash
 $ pip3 install -r requirements.txt
 $ python3 main.py
