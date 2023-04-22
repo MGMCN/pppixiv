@@ -33,10 +33,10 @@ $ docker pull godmountain/pppixiv:latest
 $ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
 ```
 ### Run the code without docker
-Configure the local environment and then run the code directly.
+Create .env file and Illusts folders.
 ```
 .
-├── .env 👈🏻 Put your pixiv account name and password in .env. Like username=xxx password=xxx
+├── .env 👈🏻 Paste your pixiv account and password into the .env file.
 ├── Illusts 👈🏻 Create the Illusts folder in the root directory of the project.
 ├── Dockerfile
 ├── LICENSE
@@ -52,7 +52,13 @@ Configure the local environment and then run the code directly.
 ├── templates
 └── test.py
 ```
-Add chromedriver to your environment variable. (Notice:The chromedriver version should be the same as the chrome browser you downloaded.)
+.env should like 👇🏻
+```
+username=xxx
+password=xxx
+```
+Add chromedriver to your environment variable. (Notice : The chromedriver version should be the same as the chrome browser you downloaded.) Please google how to set chromedriver environment variables by yourself. 
+Then execute the following two scripts after you have set up chromedriver.
 ```bash
 $ pip3 install -r requirements.txt
 $ python3 main.py
