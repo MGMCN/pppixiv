@@ -133,3 +133,6 @@ dmypy.json
 
 # Pycharm
 .idea/
+
+# Illusts
+Illusts/

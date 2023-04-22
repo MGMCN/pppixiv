@@ -13,6 +13,7 @@ We will provide more features for this project later.
 
 ## Usage
 ### Build with Docker
+Build your docker image and run it.
 ```bash
 # build locally
 $ docker build . -t pixiv
@@ -26,11 +27,36 @@ If you successfully run this image up, you can run the test.py file to see the o
 $ python3 test.py # Make sure you have the requests library installed
 ```
 ### Use DockerHub Image
+Pull our built image directly.
 ```bash
 $ docker pull godmountain/pppixiv:latest
 $ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
 ```
-
+### Run the code without docker
+Configure the local environment and then run the code directly.
+```
+.
+├── .env 👈🏻 Put your pixiv account name and password in .env. Like username=xxx password=xxx
+├── Illusts 👈🏻 Create the Illusts folder in the root directory of the project.
+├── Dockerfile
+├── LICENSE
+├── README.md
+├── app.py
+├── image
+├── main.py
+├── requirements.txt
+├── router
+├── run.sh
+├── services
+├── static
+├── templates
+└── test.py
+```
+Add chromedriver to your environment variable. (Notice:The chromedriver version should be the same as the chrome browser you downloaded.)
+```bash
+$ pip3 install -r requirements.txt
+$ python3 main.py
+```
 ## Visit our dashboard
 Visit```http://ip:port/dashboard```.You will see 👇🏻
 Then enter the uid and click the search button, all the illustrations of the user with the specified uid will be searched and displayed on the right side.  
