@@ -1,4 +1,4 @@
-FROM spryker/chromedriver
+FROM zyuzka/chromedriver:latest
 
 ENV username="username"
 ENV password="password"
