@@ -96,7 +96,7 @@ class Pixiv(BaseService):
 
     def get_illust_list_by_uid(self, uid) -> (list, bool, str):
         success = True
-        msg = None
+        msg = "Get illusts success!"
 
         offset = 0
 
@@ -118,9 +118,10 @@ class Pixiv(BaseService):
                     break
                 offset = self.pixivApi.parse_qs(res["next_url"])["offset"]
             else:
-                success = False
-                msg = f"{uid} do not exist!"
-                self.logger.debug(msg)
+                if len(l) == 0:
+                    success = False
+                    msg = f"{uid} do not exist!"
+                    self.logger.debug(msg)
                 break
 
         return l, success, msg
