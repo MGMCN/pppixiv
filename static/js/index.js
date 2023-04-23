@@ -38,6 +38,8 @@ searchBtn.addEventListener('click', function () {
                 });
                 listElement.innerHTML = render_html;
             } else {
+                global_list = [];
+                listElement.innerHTML = ``;
                 alert(message);
             }
         } else {

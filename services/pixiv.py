@@ -203,7 +203,6 @@ class Pixiv(BaseService):
         except:
             # Exception type ?
             success = False
-        if not success:
             msg = "Download illust failed!"
         self.logger.debug(msg)
         return success, msg

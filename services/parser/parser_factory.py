@@ -6,9 +6,11 @@ from .illust import IllustParser
 class ParserFactory:
     @staticmethod
     def create_parser(parser_type) -> BaseParser:
-        if parser_type == "tags":
-            return TagParser()
-        elif parser_type == "illusts":
-            return IllustParser()
-        else:
-            return None
+        # Python version should be higher than or equal to 3.10
+        match parser_type:
+            case "tags":
+                return TagParser()
+            case "illusts":
+                return IllustParser()
+            case _:
+                return None
