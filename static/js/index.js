@@ -17,10 +17,18 @@ searchBtn.addEventListener('click', function () {
     var type = select.options[select.selectedIndex].value;
     var formData = new FormData();
     formData.append(type, input.value)
-    if (type === 'uid') {
-        xhr.open('POST', '/getIllustListByUid', true);
-    } else {
-        xhr.open('POST', '/getIllustDownloadUrl', true);
+    switch (type) {
+        case 'uid':
+            xhr.open('POST', '/getIllustListByUid', true);
+            break;
+        case 'illust_id':
+            xhr.open('POST', '/getIllustDownloadUrl', true);
+            break;
+        case 'mode':
+            xhr.open('POST', '/getIllustRanking', true);
+            break;
+        default:
+            break;
     }
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
