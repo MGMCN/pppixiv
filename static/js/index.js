@@ -7,6 +7,7 @@ const masonryContainer = document.getElementById("masonry-container");
 const previewButton = document.getElementById("toggle-button");
 const preogressBarContainer = document.getElementById("pb-container")
 const progressBar = document.getElementById("pb");
+const progressText = document.getElementById("progress-text");
 // debug
 // console.log(searchBtn);
 // console.log(downloadBtn);
@@ -55,7 +56,7 @@ searchBtn.addEventListener('click', function () {
                 global_list = data.list;
                 global_list.forEach(function (item) {
                     var title = item.title;
-                    var url = item.url
+                    var url = item.url;
                     render_html += `<li class="list-group-item"><a href="${url}">${title}</a><span class="status-circle"></span></li>`;
                 });
                 listElement.innerHTML = render_html;
@@ -158,7 +159,9 @@ downloadBtn.addEventListener('click', function () {
                         confirmButtonText: 'confirm'
                     });
                 }
-                progressBar.style.width = toPercent((count_success + count_failed) / global_list.length * 1.0);
+                var percentage = toPercent((count_success + count_failed) / global_list.length * 1.0);
+                progressBar.style.width = percentage;
+                progressText.innerText = percentage;
             };
             xhr.idx = index;
             xhr.send(new URLSearchParams(formData).toString());
