@@ -67,11 +67,21 @@ $ python3 main.py
 Visit```http://ip:port/dashboard```.You will see 👇🏻
 Then enter the uid and click the search button, all the illustrations of the user with the specified uid will be searched and displayed on the right side.  
 
-<img src="image/search.jpg" width = "883" height = "660"/>   
+<img src="image/search.png" width = "70%" height = "70%"/>   
   
 Click the download button and all illustrations will be downloaded. If the download is successful, the gray dot on the right will turn green. Failed downloads will turn red.  
 
-<img src="image/download.jpg" width = "883" height = "660"/>  
+<img src="image/download.png" width = "70%" height = "70%"/>   
+
+After the illustration is downloaded successfully you will see the following message.
+
+<img src="image/success.png" width = "70%" height = "70%"/>   
+
+Click the Preview button to preview the illustration you just downloaded.
+
+<img src="image/preview.png" width = "70%" height = "70%"/>  
+
+The artist in this example is referenced from [仁井学](https://www.pixiv.net/users/17089321).
 
 ## Api for accessing our pixiv services
 Visit```http://ip:port/getIllustListByUid```and post data ```{"uid":"xxx"}```.You will get 👇🏻
