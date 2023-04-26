@@ -59,6 +59,12 @@ searchBtn.addEventListener('click', function () {
                     render_html += `<li class="list-group-item"><a href="${url}">${title}</a><span class="status-circle"></span></li>`;
                 });
                 listElement.innerHTML = render_html;
+                Swal.fire({
+                    title: 'Search success',
+                    text: `Search complete! Found: ${global_list.length} items`,
+                    icon: 'success',
+                    confirmButtonText: 'confirm'
+                });
             } else {
                 Swal.fire({
                     title: 'Search failed',
