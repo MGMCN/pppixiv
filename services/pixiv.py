@@ -189,7 +189,7 @@ class Pixiv(BaseService):
         return l, success, msg
 
     def download_illust(self, url, file_name) -> (bool, str):
-        msg = "Download illust success!"
+        msg = None
         try:
             file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
             # 1/100000 Not graceful
@@ -200,6 +200,7 @@ class Pixiv(BaseService):
             self.logger.debug(f"file_name -> {file_name}")
             success = self.pixivApi.download(url=url, path=".",
                                              fname="Illusts/" + file_name + ".jpg")
+            msg = file_name + ".jpg"
         except:
             # Exception type ?
             success = False

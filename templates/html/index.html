@@ -48,19 +48,36 @@
         <!-- right div -->
         <div class="col-sm-12 col-md-6 col-lg-10 right-div">
             <div class="border-div">
+                <div class="toggle-switch-container">
+                    <label>Preview</label>
+                    <label class="toggle-switch" for="toggle-button">
+                        <input type="checkbox" id="toggle-button">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="progress pb-container" id="pb-container">
+                    <div class="progress-bar pb-style" role="progressbar" id="pb"></div>
+                </div>
+
                 <ul class="list-group" id="list-group">
                 </ul>
+
+                <div class="masonry">
+                    <div class="items" id="masonry-container"></div>
+                </div>
             </div>
         </div>
 
     </div>
 </div>
-
-<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<!-- import sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- import jQuery & Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
         integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

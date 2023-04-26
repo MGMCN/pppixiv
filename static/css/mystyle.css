@@ -92,3 +92,79 @@ html, body, .container-fluid, .row, .left-div, .right-div {
     padding: 5px;
     float: right;
 }
+
+.masonry {
+    margin: 10px;
+    column-count: 6;
+    column-gap: 0px;
+}
+
+.item {
+    width: calc(80% - 10px);
+    margin-bottom: 5px;
+}
+
+.item-img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+.toggle-switch-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-switch-container label:first-of-type {
+    margin-right: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s;
+}
+
+input[type="checkbox"]:checked + .slider {
+    background-color: #2196F3;
+}
+
+input[type="checkbox"]:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.pb-container {
+    display: none;
+}
+
+.pb-style {
+    width: 0%;
+}
