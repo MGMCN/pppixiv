@@ -16,8 +16,7 @@ html, body, .container-fluid, .row, .left-div, .right-div {
 .floating-dialog {
     position: fixed;
     bottom: 10px;
-    left: 1px;
-    right: 10px;
+    left: 0px;
     z-index: 1;
     background-color: #fff;
     border: 1px solid #ccc;
