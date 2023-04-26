@@ -93,7 +93,6 @@ function toPercent(floatNum) {
     return str;
 }
 
-// 2.然后可以做个进度条转动的那种提示使用者我们正在下载？
 downloadBtn.addEventListener('click', function () {
     // ?
     if (global_list.length === 0) {
