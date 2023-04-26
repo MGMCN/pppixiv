@@ -1,4 +1,5 @@
 from app import App
+from flask import send_from_directory
 
 app = App(__name__)
 
@@ -7,6 +8,11 @@ app = App(__name__)
 @app.route('/')
 def lsp():
     return 'Hello World! lsp!'
+
+
+@app.route('/Illusts/<path:path>')
+def send_illusts(path):
+    return send_from_directory('Illusts', path)
 
 
 if __name__ == '__main__':
