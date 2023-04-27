@@ -2,6 +2,7 @@ FROM zyuzka/chromedriver:100
 
 ENV username="username"
 ENV password="password"
+ENV gfw="0"
 
 LABEL maintainer="MGMCN"
 
@@ -11,4 +12,4 @@ COPY . /APP
 
 WORKDIR /APP
 
-ENTRYPOINT sh run.sh $username $password
+ENTRYPOINT sh run.sh $username $password $gfw
