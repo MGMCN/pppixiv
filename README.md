@@ -17,10 +17,11 @@ Build your docker image and run it.
 ```bash
 # build locally
 $ docker build . -t pixiv
-# run on detach (notice : -v will specify the folder where the illustrations will be downloaded)
-$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts pixiv
+# run on detach (notice : -e gfw="0" There are two values of gfw, 0 and 1, 0 means outside the firewall of mainland China, and 1 means inside the firewall of mainland China.
+#                         -v will specify the folder where the illustrations will be downloaded)
+$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -e gfw="0" -v /Your/local/path/dir:/APP/Illusts pixiv
 # run in foreground
-$ docker run -it -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts pixiv
+$ docker run -it -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -e gfw="0" -v /Your/local/path/dir:/APP/Illusts pixiv
 ```
 If you successfully run this image up, you can run the test.py file to see the output. The first time will be slower because you have to get the pixiv token.
 ```bash
@@ -30,7 +31,7 @@ $ python3 test.py # Make sure you have the requests library installed
 Pull our built image directly.
 ```bash
 $ docker pull godmountain/pppixiv:latest
-$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
+$ docker run -d -p 3333:5000 -e username="your_pixiv_accout_name" -e password="your_pixiv_account_password" -e gfw="0" -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
 ```
 ### Run the code without docker
 Create .env file and Illusts folders.
