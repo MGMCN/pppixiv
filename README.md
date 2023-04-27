@@ -12,6 +12,7 @@ Also you can modify our source code directly.
 We will provide more features for this project later.
 
 ## Usage
+> The docker parameter gfw="1" is being tested and may fail. So please don't use it for now. See [#issue56](https://github.com/MGMCN/pppixiv/issues/56).
 ### Build with Docker
 Build your docker image and run it.
 ```bash
