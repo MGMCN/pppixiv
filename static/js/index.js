@@ -110,6 +110,15 @@ downloadBtn.addEventListener('click', function () {
             confirmButtonText: 'confirm'
         });
     } else {
+        if (global_downloaded_list != 0) {
+            Swal.fire({
+                title: 'Info',
+                text: "Already downloaded!",
+                icon: 'info',
+                confirmButtonText: 'confirm'
+            });
+            return;
+        }
         progressBar.style.width = '0%';
         preogressBarContainer.style.display = 'block';
         let count_success = 0;
