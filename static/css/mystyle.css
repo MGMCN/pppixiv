@@ -93,6 +93,7 @@ html, body, .container-fluid, .row, .left-div, .right-div {
 }
 
 .masonry {
+    display: none;
     margin: 10px;
     column-count: 6;
     column-gap: 0px;
