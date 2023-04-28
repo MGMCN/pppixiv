@@ -4,6 +4,7 @@ const input = document.getElementById("input-field");
 const select = document.getElementById("select-field");
 const listElement = document.getElementById("list-group");
 const masonryContainer = document.getElementById("masonry-container");
+const masonryItemsContainer = document.getElementById("masonry-items-container");
 const previewButton = document.getElementById("toggle-button");
 const preogressBarContainer = document.getElementById("pb-container")
 const progressBar = document.getElementById("pb");
@@ -23,7 +24,7 @@ var toggleFlag = false;
 searchBtn.addEventListener('click', function () {
     preogressBarContainer.style.display = 'none';
     progressBar.style.width = '0%';
-    masonryContainer.innerHTML = ``;
+    masonryItemsContainer.innerHTML = ``;
     listElement.innerHTML = ``;
     global_list = [];
     global_downloaded_list = [];
@@ -89,9 +90,9 @@ searchBtn.addEventListener('click', function () {
 function renderPreviewingView() {
     var images = '';
     global_downloaded_list.forEach(function (image) {
-        images += `<div class="item"><img class="item-img" src="../../Illusts/${image}"></div>`;
+        images += `<div class="item"><img class="item-img" src="/Illusts/${image}"></div>`;
     });
-    masonryContainer.innerHTML = images;
+    masonryItemsContainer.innerHTML = images;
 }
 
 function toPercent(floatNum) {
