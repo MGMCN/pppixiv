@@ -6,7 +6,7 @@ const listElement = document.getElementById("list-group");
 const masonryContainer = document.getElementById("masonry-container");
 const masonryItemsContainer = document.getElementById("masonry-items-container");
 const previewButton = document.getElementById("toggle-button");
-const preogressBarContainer = document.getElementById("pb-container")
+const preogressBarContainer = document.getElementById("pb-container");
 const progressBar = document.getElementById("pb");
 const progressText = document.getElementById("progress-text");
 // debug
