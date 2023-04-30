@@ -1,0 +1,19 @@
+html, body, .container-fluid, .row, .left-div, .right-div {
+    height: 100%;
+}
+
+.border-div {
+    border-radius: 0.25rem;
+    padding: 20px;
+}
+
+/* nav */
+.navbar {
+    background-color: #0096D6;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.text-white {
+    color: #fff;
+}

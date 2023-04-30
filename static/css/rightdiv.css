@@ -1,34 +1,3 @@
-html, body, .container-fluid, .row, .left-div, .right-div {
-    height: 100%;
-}
-
-.border-div {
-    border-radius: 0.25rem;
-    padding: 20px;
-}
-
-/* left div */
-.left-div {
-    background-color: #f8f9fa;
-    border-right: 1px solid #dee2e6;
-}
-
-.floating-dialog {
-    position: fixed;
-    bottom: 10px;
-    left: 0px;
-    z-index: 1;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-    padding: 1px;
-}
-
-.dialog-content {
-    padding: 20px;
-}
-
 /* right div */
 .right-div {
     background-color: #fff;
@@ -39,24 +8,6 @@ html, body, .container-fluid, .row, .left-div, .right-div {
 
 .right-div::-webkit-scrollbar {
     width: 0px; /* Hide scrollbar for Chrome, Safari, and Opera */
-}
-
-.button-group {
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-    gap: 20px;
-}
-
-/* nav */
-.navbar {
-    background-color: #0096D6;
-    border-radius: 0;
-    margin-bottom: 0;
-}
-
-.text-white {
-    color: #fff;
 }
 
 /* original circle */
