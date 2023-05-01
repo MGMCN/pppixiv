@@ -1,24 +1,19 @@
 import logging
-import os
-
-from dotenv import load_dotenv
 from flask import Flask
-
 from router.pixiv_router import pixiv_router, router_set_pixiv_api
 from services.pixiv import Pixiv
 
 
 class App(Flask):
-    def __init__(self, name: str):
+    def __init__(self, name, username, password, gfw):
         super().__init__(name)
-        self.init()
+        self.init(username, password, gfw)
 
-    def init(self):
-        load_dotenv(verbose=True)
+    def init(self, username, password, gfw):
         self.logger.setLevel(logging.DEBUG)
-        self.username = os.getenv("username")
-        self.password = os.getenv("password")
-        self.gfw = True if os.getenv("gfw") == "1" else False
+        self.username = username
+        self.password = password
+        self.gfw = True if gfw == "1" else False
         self.myPixiv = Pixiv(service_name="pixiv", gfw=self.gfw, username=self.username, password=self.password,
                              interval=3500)
         self.register_blueprint(pixiv_router)
