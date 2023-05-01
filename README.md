@@ -65,6 +65,7 @@ Create .env file and Illusts folders.
 ```
 username=xxx
 password=xxx
+port=xxx
 gfw=xxx
 ```
 Add chromedriver to your environment variable. (Notice : The chromedriver version should be the same as the chrome browser you downloaded.) Please google how to set chromedriver environment variables by yourself. 
