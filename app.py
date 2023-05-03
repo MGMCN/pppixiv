@@ -5,15 +5,14 @@ from services.pixiv import Pixiv
 
 
 class App(Flask):
-    def __init__(self, name, username, password, gfw):
+    def __init__(self, name):
         super().__init__(name)
-        self.init(username, password, gfw)
 
-    def init(self, username, password, gfw):
+    def init(self, config):
         self.logger.setLevel(logging.DEBUG)
-        self.username = username
-        self.password = password
-        self.gfw = True if gfw == "1" else False
+        self.username = config["username"]
+        self.password = config["password"]
+        self.gfw = True if config["gfw"] == "1" else False
         self.myPixiv = Pixiv(service_name="pixiv", gfw=self.gfw, username=self.username, password=self.password,
                              interval=3500)
         self.register_blueprint(pixiv_router)
