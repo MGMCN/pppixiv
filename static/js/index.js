@@ -9,17 +9,11 @@ const previewButton = document.getElementById("toggle-button");
 const preogressBarContainer = document.getElementById("pb-container");
 const progressBar = document.getElementById("pb");
 const progressText = document.getElementById("progress-text");
-// debug
-// console.log(searchBtn);
-// console.log(downloadBtn);
-// console.log(input.value);
-// console.log(select.options[select.selectedIndex].value);
-// console.log(listElement);
 
-var global_list = [];
+let global_list = [];
 const regex = /Get success! (.*)/;
-var global_downloaded_list = [];
-var toggleFlag = false;
+let global_downloaded_list = [];
+let toggleFlag = false;
 
 searchBtn.addEventListener('click', function () {
     preogressBarContainer.style.display = 'none';
@@ -29,9 +23,9 @@ searchBtn.addEventListener('click', function () {
     global_list = [];
     global_downloaded_list = [];
 
-    var xhr = new XMLHttpRequest();
-    var type = select.options[select.selectedIndex].value;
-    var formData = new FormData();
+    let xhr = new XMLHttpRequest();
+    let type = select.options[select.selectedIndex].value;
+    let formData = new FormData();
     formData.append(type, input.value)
     switch (type) {
         case 'uid':
@@ -49,15 +43,15 @@ searchBtn.addEventListener('click', function () {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         if (this.status === 200) {
-            var data = JSON.parse(this.responseText);
-            var status = data.status;
-            var message = data.message;
+            let data = JSON.parse(this.responseText);
+            let status = data.status;
+            let message = data.message;
             if (status === 1) {
-                var render_html = "";
+                let render_html = "";
                 global_list = data.list;
                 global_list.forEach(function (item) {
-                    var title = item.title;
-                    var url = item.url;
+                    let title = item.title;
+                    let url = item.url;
                     render_html += `<li class="list-group-item"><a href="${url}">${title}</a><span class="status-circle"></span></li>`;
                 });
                 listElement.innerHTML = render_html;
@@ -88,7 +82,7 @@ searchBtn.addEventListener('click', function () {
 });
 
 function renderPreviewingView() {
-    var images = '';
+    let images = '';
     global_downloaded_list.forEach(function (image) {
         images += `<div class="item"><img class="item-img" src="/Illusts/${image}"></div>`;
     });
@@ -96,7 +90,7 @@ function renderPreviewingView() {
 }
 
 function toPercent(floatNum) {
-    var str = Number(floatNum * 100).toFixed(1);
+    let str = Number(floatNum * 100).toFixed(1);
     str += "%";
     return str;
 }
@@ -125,19 +119,21 @@ downloadBtn.addEventListener('click', function () {
         let count_success = 0;
         let count_failed = 0;
         global_list.forEach(function (item, index) {
-            var title = item.title;
-            var url = item.download_url;
-            var xhr = new XMLHttpRequest();
-            var formData = new FormData();
+            let title = item.title;
+            let url = item.download_url;
+            let iid = item.id;
+            let xhr = new XMLHttpRequest();
+            let formData = new FormData();
+            formData.append("id", iid);
             formData.append("title", title);
             formData.append("download_url", url);
             xhr.open('POST', '/download', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {
                 if (this.status === 200) {
-                    var data = JSON.parse(this.responseText);
-                    var status = data.status;
-                    var message = data.message;
+                    let data = JSON.parse(this.responseText);
+                    let status = data.status;
+                    let message = data.message;
                     if (status === 1) {
                         count_success += 1;
                         global_downloaded_list.push(message.match(regex)[1]);
@@ -169,7 +165,7 @@ downloadBtn.addEventListener('click', function () {
                         confirmButtonText: 'confirm'
                     });
                 }
-                var percentage = toPercent((count_success + count_failed) / global_list.length * 1.0);
+                let percentage = toPercent((count_success + count_failed) / global_list.length * 1.0);
                 progressBar.style.width = percentage;
                 progressText.innerText = percentage;
             };

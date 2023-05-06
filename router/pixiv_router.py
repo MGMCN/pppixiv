@@ -56,7 +56,8 @@ def getIllustDownloadUrl():
 
 @pixiv_router.route('/download', methods=["POST"])
 def downloadIllust():
+    iid = request.form["id"]
     url = request.form["download_url"]
     title = request.form["title"]
-    success, msg = mybpPixiv.download_illust(url=url, file_name=title)
+    success, msg = mybpPixiv.download_illust(iid=iid, url=url, file_name=title)
     return pack_json_data([], success, msg)
