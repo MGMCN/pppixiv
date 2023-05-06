@@ -3,11 +3,11 @@ import sched
 import threading
 import time
 import re
-
+import os
 import pixivpy3 as pixiv
 from gppt import GetPixivToken
-from .base import BaseService
 
+from .base import BaseService
 from .parser.parser_factory import ParserFactory
 
 
@@ -198,15 +198,16 @@ class Pixiv(BaseService):
             self.logger.debug(msg)
         return l, success, msg
 
-    def download_illust(self, url, file_name) -> (bool, str):
-        msg = None
+    def download_illust(self, iid, url, file_name) -> (bool, str):
+        # Not graceful
         try:
             file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
-            # 1/100000 Not graceful
-            file_name += str(random.randint(1, 1000))
-            file_name += "_"
-            file_name += str(random.randint(1, 100))
-            file_name += "_"
+            file_name = f"{file_name}_{iid}"
+            count = 1
+            temp = file_name
+            while os.path.exists(f"./Illusts/{file_name}.jpg"):
+                file_name = f"{temp}_{str(count)}"
+                count += 1
             self.logger.debug(f"file_name -> {file_name}")
             success = self.pixivApi.download(url=url, path=".",
                                              fname="Illusts/" + file_name + ".jpg")

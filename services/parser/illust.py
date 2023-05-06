@@ -11,6 +11,7 @@ class IllustParser(BaseParser):
         result = []
         for item in data:
             result.append({
+                "id": item["id"],
                 "title": item["title"],
                 "url": pack_illust_url(item["id"]),
                 "download_url": item["image_urls"]["large"],
