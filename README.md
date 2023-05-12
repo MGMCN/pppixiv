@@ -38,7 +38,7 @@ $ docker run -d -p 3333:5000 \
              -e password="your_pixiv_account_password" \
              -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
 ```
-### Run the code without docker
+### Run outside the docker container
 Create .env file and Illusts folders.
 ```
 .
@@ -70,6 +70,21 @@ Then execute the following two commands after you have set up chromedriver.
 $ pip3 install -r requirements.txt
 $ python3 main.py
 ```
+### Solution for get token failure
+If you encounter this problem below. 👇🏻 
+```
+DEBUG in main: =====================================================================================
+DEBUG in main: Authorized on pixiv account your_account_name. Please wait for authentication.
+DEBUG in pixiv: getToken error!
+DEBUG in pixiv: getToken error!
+DEBUG in pixiv: getToken error!
+DEBUG in pixiv: getToken error!
+DEBUG in pixiv: getToken error!
+DEBUG in main: Failed to get token, please check if you are blocked by pixiv or possibly because of reCAPTCHA v2 detection.
+DEBUG in main: Application ends gracefully.
+DEBUG in main: =====================================================================================
+```
+You can try setting [headless](https://github.com/MGMCN/pppixiv/blob/dfda5cbbef2e966d664b22a5a20b5b6ac7bf9785/services/pixiv.py#L54) to False and then manually validate reCAPTCHA. Please note that when you use this approach, make sure you are running the pppixiv outside a docker container.
 ## Visit our dashboard
 Visit```http://ip:port/dashboard```.You will see 👇🏻
 Then enter the uid and click the search button, all the illustrations of the user with the specified uid will be searched and displayed on the right side.  
