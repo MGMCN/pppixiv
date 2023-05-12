@@ -25,20 +25,13 @@ def singleton(cls):
 @singleton
 class Pixiv(BaseService):
 
-    def __init__(self, service_name, gfw, username, password, retry=5, interval=3599):
+    def __init__(self, service_name, username, password, retry=5, interval=3599):
         super().__init__(service_name=service_name)
         self.pixivUsername = username
         self.pixivPassword = password
-        self.gfw = gfw
         # Init pixiv api
         self.pixivTokenApi = GetPixivToken()
-        if not self.gfw:
-            self.pixivApi = pixiv.AppPixivAPI()
-        else:
-            # For gfw users
-            self.pixivApi = pixiv.ByPassSniApi()
-            self.pixivApi.require_appapi_hosts()
-            self.pixivApi.set_accept_language("en-us")  # necessary ?
+        self.pixivApi = pixiv.AppPixivAPI()
         self.token = None
         self.retry = retry
         self.scheduler = sched.scheduler(time.time, time.sleep)

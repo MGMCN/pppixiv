@@ -12,14 +12,12 @@ class App(Flask):
         self.logger.setLevel(logging.DEBUG)
         self.username = config["username"]
         self.password = config["password"]
-        self.gfw = True if config["gfw"] == "1" else False
-        self.myPixiv = Pixiv(service_name="pixiv", gfw=self.gfw, username=self.username, password=self.password,
+        self.myPixiv = Pixiv(service_name="pixiv", username=self.username, password=self.password,
                              interval=3500)
         self.register_blueprint(pixiv_router)
         self.pass_context()
 
     def run_services(self) -> (bool, str):
-        self.logger.debug(f"gfw mode -> {self.gfw}")
         success, msg = self.myPixiv.start_pixiv_session()
         return success, msg
 

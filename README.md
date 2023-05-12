@@ -12,19 +12,17 @@ Also you can modify our source code directly.
 We will provide more features for this project later.
 
 ## Usage
-> The running mode with the docker parameter gfw set to 1 is under testing and may fail. So please don't use it for now. See [#issue56](https://github.com/MGMCN/pppixiv/issues/56).
+> For users in mainland China, please enable vpn service.
 ### Build with Docker
 Build your docker image and run it.
 ```bash
 # build locally
 $ docker build . -t pixiv
 # run on detach 
-# -e gfw="0" There are two values of gfw, 0 and 1, 0 means outside the firewall of mainland China, and 1 means inside the firewall of mainland China.
 # -v will specify the folder where the illustrations will be downloaded
 $ docker run -d -p 3333:5000 \
              -e username="your_pixiv_accout_name" \
              -e password="your_pixiv_account_password" \
-             -e gfw="0" \
              -v /Your/local/path/dir:/APP/Illusts pixiv
 ```
 If you successfully run this image up, you can run the test.py file to see the output. The first time will be slower because you have to get the pixiv token.
@@ -38,7 +36,6 @@ $ docker pull godmountain/pppixiv:latest
 $ docker run -d -p 3333:5000 \
              -e username="your_pixiv_accout_name" \
              -e password="your_pixiv_account_password" \
-             -e gfw="0" \
              -v /Your/local/path/dir:/APP/Illusts godmountain/pppixiv:latest
 ```
 ### Run the code without docker
@@ -66,7 +63,6 @@ Create .env file and Illusts folders.
 username=xxx
 password=xxx
 port=xxx
-gfw=xxx
 ```
 Add chromedriver to your environment variable. (Notice : The chromedriver version should be the same as the chrome browser you downloaded.) Please google how to set chromedriver environment variables by yourself. 
 Then execute the following two commands after you have set up chromedriver.
