@@ -12,13 +12,13 @@ Also you can modify our source code directly.
 We will provide more features for this project later.
 
 ## Usage
+> For users in mainland China, please enable vpn service.
 ### Build with Docker
 Build your docker image and run it.
 ```bash
 # build locally
 $ docker build . -t pixiv
 # run on detach 
-# -e gfw="0" Currently, GFW mode is unnecessary as the application functions properly with a VPN.
 # -v will specify the folder where the illustrations will be downloaded
 $ docker run -d -p 3333:5000 \
              -e username="your_pixiv_accout_name" \
@@ -70,7 +70,6 @@ Then execute the following two commands after you have set up chromedriver.
 $ pip3 install -r requirements.txt
 $ python3 main.py
 ```
-For users in Mainland China, please set `headless=False` in `line 54, pixiv.py` for manual reCAPTCHA validation.
 ## Visit our dashboard
 Visit```http://ip:port/dashboard```.You will see 👇🏻
 Then enter the uid and click the search button, all the illustrations of the user with the specified uid will be searched and displayed on the right side.  
