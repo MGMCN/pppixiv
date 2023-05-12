@@ -3,7 +3,6 @@ FROM zyuzka/chromedriver:100
 ENV username="username"
 ENV password="password"
 ENV port="5000"
-ENV gfw="0"
 
 LABEL maintainer="MGMCN"
 
@@ -13,4 +12,4 @@ COPY . /APP
 
 WORKDIR /APP
 
-ENTRYPOINT sh run.sh $username $password $port $gfw
+ENTRYPOINT sh run.sh $username $password $port

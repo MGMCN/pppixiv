@@ -7,7 +7,6 @@ class Config:
         load_dotenv(verbose=True)
         self.config = {
             "port": None,
-            "gfw": None,
             "username": None,
             "password": None,
         }

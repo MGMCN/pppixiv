@@ -6,5 +6,4 @@ touch .env
 echo "username=$1" >> .env
 echo "password=$2" >> .env
 echo "port=$3" >> .env
-echo "gfw=$4" >> .env
 python3 main.py
