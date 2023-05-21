@@ -159,8 +159,8 @@ downloadBtn.addEventListener('click', function () {
                 if (count_success + count_failed === global_list.length) {
                     renderPreviewingView();
                     Swal.fire({
-                        title: 'Download success',
-                        text: `Download complete! Success: ${count_success}, Failed: ${count_failed}`,
+                        title: 'Download complete',
+                        text: `Success: ${count_success}, Failed: ${count_failed}`,
                         icon: 'success',
                         confirmButtonText: 'confirm'
                     });

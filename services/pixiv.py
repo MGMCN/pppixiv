@@ -1,4 +1,3 @@
-import random
 import sched
 import threading
 import time
@@ -36,6 +35,7 @@ class Pixiv(BaseService):
         self.retry = retry
         self.scheduler = sched.scheduler(time.time, time.sleep)
         self.interval = interval
+        self.downloaded = set()
         # Init parser
         self.tagParser = ParserFactory.create_parser("tags")
         self.illustParser = ParserFactory.create_parser("illusts")
@@ -192,23 +192,31 @@ class Pixiv(BaseService):
         return l, success, msg
 
     def download_illust(self, iid, url, file_name) -> (bool, str):
-        # Not graceful
-        try:
-            file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
-            file_name = f"{file_name}_{iid}"
-            count = 1
-            temp = file_name
-            while os.path.exists(f"./Illusts/{file_name}.jpg"):
-                file_name = f"{temp}_{str(count)}"
-                count += 1
-            self.logger.debug(f"file_name -> {file_name}")
-            success = self.pixivApi.download(url=url, path=".",
-                                             fname="Illusts/" + file_name + ".jpg")
-            msg = file_name + ".jpg"
-        except:
-            # Exception type ?
+        if iid not in self.downloaded:
+            # Not graceful
+            try:
+                file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
+                file_name = f"{file_name}_{iid}"
+                count = 1
+                temp = file_name
+                while os.path.exists(f"./Illusts/{file_name}.jpg"):
+                    file_name = f"{temp}_{str(count)}"
+                    count += 1
+                self.logger.debug(f"file_name -> {file_name}")
+                success = self.pixivApi.download(url=url, path=".",
+                                                 fname="Illusts/" + file_name + ".jpg")
+                if success:
+                    self.downloaded.add(iid)
+                    msg = file_name + ".jpg"
+                else:
+                    msg = "Download illust failed!"
+            except:
+                # Exception type ?
+                success = False
+                msg = "Download illust failed!"
+        else:
             success = False
-            msg = "Download illust failed!"
+            msg = f"Illust {iid} already downloaded!"
         self.logger.debug(msg)
         return success, msg
 
