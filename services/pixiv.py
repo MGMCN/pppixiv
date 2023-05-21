@@ -1,4 +1,3 @@
-import random
 import sched
 import threading
 import time
@@ -193,7 +192,7 @@ class Pixiv(BaseService):
         return l, success, msg
 
     def download_illust(self, iid, url, file_name) -> (bool, str):
-        if url not in self.downloaded:
+        if iid not in self.downloaded:
             # Not graceful
             try:
                 file_name = re.sub(r'[^\w\-_.()]', '_', file_name)
@@ -207,7 +206,7 @@ class Pixiv(BaseService):
                 success = self.pixivApi.download(url=url, path=".",
                                                  fname="Illusts/" + file_name + ".jpg")
                 if success:
-                    self.downloaded.add(url)
+                    self.downloaded.add(iid)
                     msg = file_name + ".jpg"
                 else:
                     msg = "Download illust failed!"
