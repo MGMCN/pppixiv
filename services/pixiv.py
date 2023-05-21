@@ -208,7 +208,9 @@ class Pixiv(BaseService):
                                                  fname="Illusts/" + file_name + ".jpg")
                 if success:
                     self.downloaded.add(url)
-                msg = file_name + ".jpg"
+                    msg = file_name + ".jpg"
+                else:
+                    msg = "Download illust failed!"
             except:
                 # Exception type ?
                 success = False
