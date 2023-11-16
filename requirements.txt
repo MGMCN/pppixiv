@@ -1,4 +1,4 @@
-Flask==2.2.3
-gppt==3.1.0
+Flask
+gppt
 PixivPy3==3.7.2
 python-dotenv==1.0.0
