@@ -1,20 +1,7 @@
 from app.config import Config
 from app.app import App
-from flask import send_from_directory
 
 app = App(__name__)
-
-
-# Only to see if this server is running correctly
-@app.route('/')
-def lsp():
-    return 'Hello World! lsp!'
-
-
-@app.route('/Illusts/<path:path>')
-def send_illusts(path):
-    return send_from_directory('Illusts', path)
-
 
 if __name__ == '__main__':
     config_loader = Config()
