@@ -1,5 +1,5 @@
-from config import Config
-from app import App
+from app.config import Config
+from app.app import App
 from flask import send_from_directory
 
 app = App(__name__)
