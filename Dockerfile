@@ -1,7 +1,7 @@
 FROM nfqlt/chromedriver:latest
 
-ENV username="user_wwvg5583"
-ENV password="nizuiai357"
+ENV username="username"
+ENV password="password"
 ENV port="5000"
 
 LABEL maintainer="MGMCN"
@@ -18,5 +18,3 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT sh run.sh $username $password $port
-
-docker run -d -p 3333:5001 -e username="user_wwvg5583" -e password="nizuiai357"  -v ./APP/Illusts godmountain/pppixiv:latest
