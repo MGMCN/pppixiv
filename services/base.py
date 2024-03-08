@@ -1,4 +1,3 @@
-
 class BaseService:
     def __init__(self, service_name: str):
         self.serviceName = service_name
