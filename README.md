@@ -5,11 +5,7 @@
 [![license](https://img.shields.io/github/license/MGMCN/pppixiv)](https://github.com/MGMCN/pppixiv/blob/main/LICENSE)
 ![last_commit](https://img.shields.io/github/last-commit/MGMCN/pppixiv?color=red&logo=github)
 
-Get links to pixiv illustrations and links to download illustrations via our api. 
-Please note that this project is a subproject of [tg-dumb-bot](https://github.com/hackroid/tg-dumb-bot). Since the current api is designed for tg-dumb-bot, you don't have easy access to the links we return (telegram comes with previews). 
-For example, you need to call the pixivAPI variable inside our service to use the download link. 
-Also you can modify our source code directly. 
-We will provide more features for this project later.
+A powerful Pixiv illustration download tool that supports batch one-click downloading of all illustrations by a specified artist.
 
 ## Usage
 > For users in mainland China, please enable vpn service.
