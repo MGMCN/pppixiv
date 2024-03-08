@@ -1,14 +1,5 @@
+from .base import BaseRouter
 from flask import Blueprint, request, render_template
-
-pixiv_router = Blueprint('pixiv_router', __name__)
-
-# Not graceful
-mybpPixiv = None
-
-
-def router_set_pixiv_api(api):
-    global mybpPixiv
-    mybpPixiv = api
 
 
 def pack_json_data(l, success, message) -> dict:
@@ -19,45 +10,51 @@ def pack_json_data(l, success, message) -> dict:
     return json
 
 
-@pixiv_router.route('/dashboard', methods=["GET"])
-def getDashBoard():
-    return render_template("html/index.html")
+class pixivServiceRouter(BaseRouter):
 
+    def __init__(self, router_name, service_api):
+        super().__init__(router_name=router_name)
+        self.router = Blueprint(router_name, __name__)
+        self.service_api = service_api
+        self.register_routes()
 
-@pixiv_router.route('/getIllustListByUid', methods=["POST"])
-def getIllustListByUid():
-    # Get uid from posted json
-    uid = request.form["uid"]
-    l, success, message = mybpPixiv.get_illust_list_by_uid(uid=uid)
-    return pack_json_data(l, success, message)
+    def register_routes(self):
+        api = self.service_api
 
+        @self.router.route('/dashboard', methods=["GET"])
+        def getDashBoard():
+            return render_template("html/index.html")
 
-@pixiv_router.route('/getTrendingTags', methods=["GET"])
-def getTrendingTags():
-    l, success, message = mybpPixiv.get_trending_tags()
-    return pack_json_data(l, success, message)
+        @self.router.route('/getIllustListByUid', methods=["POST"])
+        def getIllustListByUid():
+            # Get uid from posted json
+            uid = request.form["uid"]
+            l, success, message = api.get_illust_list_by_uid(uid=uid)
+            return pack_json_data(l, success, message)
 
+        @self.router.route('/getTrendingTags', methods=["GET"])
+        def getTrendingTags():
+            l, success, message = api.get_trending_tags()
+            return pack_json_data(l, success, message)
 
-@pixiv_router.route('/getIllustRanking', methods=["POST"])
-def getIllustRanking():
-    # Get mode from posted json
-    mode = request.form["mode"]
-    l, success, message = mybpPixiv.get_illust_ranking(mode=mode)
-    return pack_json_data(l, success, message)
+        @self.router.route('/getIllustRanking', methods=["POST"])
+        def getIllustRanking():
+            # Get mode from posted json
+            mode = request.form["mode"]
+            l, success, message = api.get_illust_ranking(mode=mode)
+            return pack_json_data(l, success, message)
 
+        @self.router.route('/getIllustDownloadUrl', methods=["POST"])
+        def getIllustDownloadUrl():
+            # Get illust_id from posted json
+            illust_id = request.form["illust_id"]
+            l, success, message = api.get_illust_download_url(illust_id=illust_id)
+            return pack_json_data(l, success, message)
 
-@pixiv_router.route('/getIllustDownloadUrl', methods=["POST"])
-def getIllustDownloadUrl():
-    # Get illust_id from posted json
-    illust_id = request.form["illust_id"]
-    l, success, message = mybpPixiv.get_illust_download_url(illust_id=illust_id)
-    return pack_json_data(l, success, message)
-
-
-@pixiv_router.route('/download', methods=["POST"])
-def downloadIllust():
-    iid = request.form["id"]
-    url = request.form["download_url"]
-    title = request.form["title"]
-    success, msg = mybpPixiv.download_illust(iid=iid, url=url, file_name=title)
-    return pack_json_data([], success, msg)
+        @self.router.route('/download', methods=["POST"])
+        def downloadIllust():
+            iid = request.form["id"]
+            url = request.form["download_url"]
+            title = request.form["title"]
+            success, msg = api.download_illust(iid=iid, url=url, file_name=title)
+            return pack_json_data([], success, msg)
